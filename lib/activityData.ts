@@ -195,3 +195,4 @@ export function getActivitiesByCategory(category: 'policies' | 'issues'): Activi
 export function getActivityById(id: string): ActivityItem | undefined {
   return ICT_ACTIVITIES.find((item) => item.id === id);
 }
+

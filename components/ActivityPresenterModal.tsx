@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useSyncExternalStore } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import QRCode from 'qrcode';
 import {
@@ -25,17 +25,6 @@ import { playCelebrationChime } from '@/lib/soundEffects';
 interface ActivityPresenterModalProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-function subscribeToWindow() {
-  return () => {};
-}
-
-function getWindowOrigin() {
-  if (typeof window !== 'undefined') {
-    return window.location.origin;
-  }
-  return '';
 }
 
 interface PresenterQuestionCardProps {
@@ -74,9 +63,9 @@ function PresenterQuestionCard({
   };
 
   return (
-    <div className="lg:col-span-7 flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4">
       {/* Question Header Card */}
-      <div className="bg-neutral-950/70 border border-neutral-800 p-4 rounded-2xl flex items-center justify-between">
+      <div className="bg-neutral-950 border border-neutral-800 p-4 rounded-2xl flex items-center justify-between">
         <div>
           <span
             className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
@@ -87,15 +76,17 @@ function PresenterQuestionCard({
           >
             {currentItem.categoryTitle} • CHALLENGE {currentItem.questionNumber}
           </span>
-          <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
+          <h3 className="text-base sm:text-xl font-bold text-white mt-1">
             Guess the {isPolicy ? 'ICT Policy' : 'ICT Issue'}
           </h3>
         </div>
 
         {/* Reveal Answer Button */}
         <button
+          type="button"
           onClick={handleToggleReveal}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 ${
+          style={{ cursor: 'pointer' }}
+          className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 ${
             isAnswerRevealed
               ? 'bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-amber-500/40'
               : 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white shadow-pink-600/30'
@@ -116,8 +107,8 @@ function PresenterQuestionCard({
       </div>
 
       {/* Picture Preview & Answer Section */}
-      <div className="bg-neutral-950/80 border border-neutral-800 rounded-2xl overflow-hidden shadow-xl">
-        <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-neutral-950 flex items-center justify-center border-b border-neutral-800">
+      <div className="bg-neutral-950 border border-neutral-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-neutral-950 flex items-center justify-center border-b border-neutral-800 min-h-[180px]">
           <Image
             src={currentItem.imageSrc}
             alt={currentItem.title}
@@ -129,8 +120,8 @@ function PresenterQuestionCard({
 
           {!isAnswerRevealed && (
             <div className="absolute inset-0 bg-neutral-950/40 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
-              <span className="bg-black/80 text-white text-xs px-3 py-1.5 rounded-full border border-white/20 font-medium">
-                Clue Image • Hidden from Presenter Title Until Revealed
+              <span className="bg-black/85 text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-full border border-white/20 font-medium shadow-md">
+                Clue Image • Hidden Title Until Revealed
               </span>
             </div>
           )}
@@ -183,12 +174,14 @@ function PresenterQuestionCard({
       {/* Presenter Step Navigation (Previous / Next) */}
       <div className="flex items-center justify-between gap-3 mt-1">
         <button
+          type="button"
           onClick={handlePrev}
           disabled={currentIndex === 0 && category === 'policies'}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 disabled:opacity-40 disabled:hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+          style={{ cursor: currentIndex === 0 && category === 'policies' ? 'not-allowed' : 'pointer' }}
+          className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 disabled:opacity-40 disabled:hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Previous Activity</span>
+          <span>Previous</span>
         </button>
 
         <span className="text-xs text-neutral-400 font-mono">
@@ -196,14 +189,16 @@ function PresenterQuestionCard({
         </span>
 
         <button
+          type="button"
           onClick={handleNext}
           disabled={currentIndex === totalQuestions - 1 && category === 'issues'}
-          className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 disabled:opacity-40 text-white text-xs sm:text-sm font-bold shadow-lg shadow-pink-600/20 transition-all active:scale-95"
+          style={{ cursor: currentIndex === totalQuestions - 1 && category === 'issues' ? 'not-allowed' : 'pointer' }}
+          className="flex items-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 disabled:opacity-40 text-white text-xs sm:text-sm font-bold shadow-lg shadow-pink-600/20 transition-all active:scale-95"
         >
           <span>
             {currentIndex === totalQuestions - 1 && category === 'policies'
               ? 'Start Part 2: ICT Issues →'
-              : 'Next Activity'}
+              : 'Next Question'}
           </span>
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -222,19 +217,20 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
 
-  const originUrl = useSyncExternalStore(subscribeToWindow, getWindowOrigin, () => '');
-
   const questions: ActivityItem[] = useMemo(
     () => getActivitiesByCategory(category),
     [category]
   );
   const currentItem: ActivityItem = questions[currentIndex] || questions[0];
 
-  // Compute mobile URL for this specific question
+  // Safely construct mobile URL
   const mobilePlayUrl = useMemo(() => {
-    const base = originUrl || 'https://zigzag-presentation.vercel.app';
-    return `${base}/activity/play?id=${currentItem.id}`;
-  }, [originUrl, currentItem.id]);
+    let origin = 'https://zigzag-presentation.vercel.app';
+    if (typeof window !== 'undefined' && window.location.origin) {
+      origin = window.location.origin;
+    }
+    return `${origin}/activity/play?id=${currentItem.id}`;
+  }, [currentItem.id]);
 
   // Generate QR Code whenever mobilePlayUrl changes
   useEffect(() => {
@@ -295,24 +291,71 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
   const isPolicy = category === 'policies';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-5xl max-h-[96vh] flex flex-col bg-neutral-900 border border-neutral-700/80 rounded-3xl shadow-2xl overflow-hidden text-white">
+    <div
+      role="dialog"
+      aria-modal="true"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 99999,
+        backgroundColor: 'rgba(0, 0, 0, 0.88)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '12px',
+        overflowY: 'auto',
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '1060px',
+          maxHeight: '94vh',
+          backgroundColor: '#121319',
+          border: '1px solid rgba(255, 255, 255, 0.16)',
+          borderRadius: '24px',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          color: '#ffffff',
+        }}
+      >
         {/* Top Header & Navigation */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-neutral-950/90 border-b border-neutral-800">
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            padding: '14px 20px',
+            backgroundColor: '#0a0a0e',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+        >
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-600 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/20">
               <QrCode className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-bold tracking-tight text-white">
+                <h2 className="text-sm sm:text-base font-bold tracking-tight text-white">
                   Interactive Activity: Guess the Picture
                 </h2>
                 <span className="text-[10px] bg-pink-500/20 text-pink-300 font-bold px-2 py-0.5 rounded-full border border-pink-500/30">
-                  Presenter Mode
+                  Presenter Screen
                 </span>
               </div>
-              <p className="text-xs text-neutral-400">
+              <p className="text-[11px] sm:text-xs text-neutral-400">
                 Audience scans the QR code to guess on their phones • You reveal the correct answer
               </p>
             </div>
@@ -320,17 +363,30 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
 
           {/* Close Button */}
           <button
+            type="button"
             onClick={onClose}
+            style={{ cursor: 'pointer' }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white text-xs font-semibold border border-neutral-700 transition-all active:scale-95"
             aria-label="Close Activity and Return to 3D Brochure"
           >
             <X className="w-4 h-4" />
-            <span className="hidden sm:inline">Back to 3D Brochure</span>
+            <span>Close / Back to Brochure</span>
           </button>
         </div>
 
         {/* Category Selector Tabs */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-2.5 bg-neutral-950/60 border-b border-neutral-800/80 gap-2">
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 20px',
+            backgroundColor: '#0d0e14',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}
+        >
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-neutral-400 mr-1 hidden sm:inline">
               Category:
@@ -338,7 +394,9 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
 
             {/* TAB 1: ICT POLICIES (Guessed First) */}
             <button
+              type="button"
               onClick={() => handleCategoryChange('policies')}
+              style={{ cursor: 'pointer' }}
               className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 isPolicy
                   ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-400/50'
@@ -354,7 +412,9 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
 
             {/* TAB 2: ICT ISSUES */}
             <button
+              type="button"
               onClick={() => handleCategoryChange('issues')}
+              style={{ cursor: 'pointer' }}
               className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 !isPolicy
                   ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30 ring-2 ring-rose-400/50'
@@ -370,14 +430,14 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
           </div>
 
           {/* Quick Question Selector Pills */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {questions.map((q, idx) => (
               <button
+                type="button"
                 key={q.id}
-                onClick={() => {
-                  setCurrentIndex(idx);
-                }}
-                className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
+                onClick={() => setCurrentIndex(idx)}
+                style={{ cursor: 'pointer' }}
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-bold transition-all ${
                   currentIndex === idx
                     ? isPolicy
                       ? 'bg-emerald-500 text-black font-extrabold ring-2 ring-emerald-400/60'
@@ -392,85 +452,99 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
           </div>
         </div>
 
-        {/* Content Body: Two-Column Layout (QR Code on Left, Clue/Answer on Right) */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* LEFT: QR Code Scanner Card (lg:col-span-5) */}
-          <div className="lg:col-span-5 flex flex-col items-center bg-neutral-950/80 border border-neutral-800 p-5 rounded-2xl shadow-xl">
-            <div className="w-full flex items-center justify-between mb-3">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-pink-400" />
-                Audience Scan Code
-              </span>
-              <span className="text-xs font-mono text-neutral-400 bg-neutral-900 px-2 py-0.5 rounded border border-neutral-800">
-                Question {currentIndex + 1} of {questions.length}
-              </span>
-            </div>
+        {/* Content Body */}
+        <div
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '16px 20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* LEFT: QR Code Scanner Card (lg:col-span-5) */}
+            <div className="lg:col-span-5 flex flex-col items-center bg-neutral-950 border border-neutral-800 p-5 rounded-2xl shadow-xl">
+              <div className="w-full flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                  Audience Scan Code
+                </span>
+                <span className="text-xs font-mono text-neutral-400 bg-neutral-900 px-2 py-0.5 rounded border border-neutral-800">
+                  Question {currentIndex + 1} of {questions.length}
+                </span>
+              </div>
 
-            {/* QR Code Canvas */}
-            <div className="relative p-3 bg-white rounded-2xl shadow-2xl flex items-center justify-center border-4 border-neutral-800">
-              {qrDataUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={qrDataUrl}
-                  alt={`QR Code for ${currentItem.title}`}
-                  className="w-56 h-56 sm:w-64 sm:h-64 object-contain rounded-lg"
-                />
-              ) : (
-                <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center text-black text-xs font-mono">
-                  Generating QR...
-                </div>
-              )}
-            </div>
-
-            <p className="text-xs text-center text-neutral-300 font-medium mt-3 max-w-xs">
-              Point your smartphone camera at this QR code to view the picture and submit your
-              guess!
-            </p>
-
-            {/* Direct Link Controls */}
-            <div className="w-full mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between gap-2">
-              <button
-                onClick={handleCopyLink}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
-                title="Copy Direct Link"
-              >
-                {copiedLink ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400 font-semibold">Copied!</span>
-                  </>
+              {/* QR Code Canvas */}
+              <div className="p-3 bg-white rounded-2xl shadow-2xl flex items-center justify-center border-4 border-neutral-800">
+                {qrDataUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={qrDataUrl}
+                    alt={`QR Code for ${currentItem.title}`}
+                    className="w-48 h-48 sm:w-60 sm:h-60 object-contain rounded-lg"
+                  />
                 ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>Copy Link</span>
-                  </>
+                  <div className="w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center text-black text-xs font-mono">
+                    Generating QR...
+                  </div>
                 )}
-              </button>
+              </div>
 
-              <a
-                href={mobilePlayUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
-                title="Open mobile audience view in new tab"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Test View</span>
-              </a>
+              <p className="text-xs text-center text-neutral-300 font-medium mt-3 max-w-xs">
+                Audience can scan with phone camera to view the picture and submit their guess!
+              </p>
+
+              {/* Direct Link Controls */}
+              <div className="w-full mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  style={{ cursor: 'pointer' }}
+                  className="flex-1 flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
+                  title="Copy Direct Link"
+                >
+                  {copiedLink ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400 font-semibold">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copy Link</span>
+                    </>
+                  )}
+                </button>
+
+                <a
+                  href={mobilePlayUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
+                  title="Open mobile audience view in new tab"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Test View</span>
+                </a>
+              </div>
+            </div>
+
+            {/* RIGHT: Presenter Controls, Clue Preview & Answer Reveal (lg:col-span-7) */}
+            <div className="lg:col-span-7">
+              <PresenterQuestionCard
+                key={`${category}-${currentIndex}`}
+                currentItem={currentItem}
+                category={category}
+                isPolicy={isPolicy}
+                currentIndex={currentIndex}
+                totalQuestions={questions.length}
+                handlePrev={handlePrev}
+                handleNext={handleNext}
+              />
             </div>
           </div>
-
-          {/* RIGHT: Presenter Controls, Clue Preview & Answer Reveal (lg:col-span-7) */}
-          <PresenterQuestionCard
-            key={`${category}-${currentIndex}`}
-            currentItem={currentItem}
-            category={category}
-            isPolicy={isPolicy}
-            currentIndex={currentIndex}
-            totalQuestions={questions.length}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
         </div>
       </div>
     </div>

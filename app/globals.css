@@ -60,6 +60,33 @@ html, body {
 
 .z-10 { z-index: 10; }
 .z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+.z-\[99999\] { z-index: 99999; }
+
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.col-span-5 { grid-column: span 5 / span 5; }
+.col-span-7 { grid-column: span 7 / span 7; }
+.col-span-12 { grid-column: span 12 / span 12; }
+
+.max-w-md { max-width: 28rem; }
+.max-w-lg { max-width: 32rem; }
+.max-w-4xl { max-width: 56rem; }
+.max-w-5xl { max-width: 64rem; }
+.max-h-\[90vh\] { max-height: 90vh; }
+.max-h-\[96vh\] { max-height: 96vh; }
+
+.bg-neutral-800 { background-color: #262626; }
+.bg-neutral-850 { background-color: #1f1f1f; }
+.bg-neutral-900 { background-color: #171717; }
+.bg-neutral-950 { background-color: #0a0a0a; }
+
+.border-neutral-700 { border-color: #404040; }
+.border-neutral-800 { border-color: #262626; }
 
 .w-full { width: 100%; }
 .h-full { height: 100%; }
@@ -381,6 +408,14 @@ button:hover {
   .sm\:p-2 { padding: 0.5rem !important; }
   .sm\:px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
   .sm\:text-xs { font-size: 0.75rem !important; line-height: 1rem !important; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+  .lg\:col-span-5 { grid-column: span 5 / span 5 !important; }
+  .lg\:col-span-7 { grid-column: span 7 / span 7 !important; }
+  .lg\:flex { display: flex !important; }
+  .lg\:block { display: block !important; }
 }
 
 @media (min-width: 768px) {

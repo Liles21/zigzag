@@ -1002,9 +1002,14 @@ export default function ZigzagBrochure() {
         </div>
 
         {/* Quick Toolbar (Sound, Auto-Orbit, Zoom, Flip, Info) */}
-        <div className="pointer-events-auto flex items-center gap-1 sm:gap-2 bg-black/75 backdrop-blur-md p-1 sm:p-1.5 rounded-2xl border border-white/10 shadow-lg flex-shrink-0">
+        <div
+          className="pointer-events-auto flex items-center gap-1 sm:gap-2 bg-black/75 backdrop-blur-md p-1 sm:p-1.5 rounded-2xl border border-white/10 shadow-lg flex-shrink-0"
+          style={{ pointerEvents: 'auto' }}
+        >
           <button
+            type="button"
             onClick={() => setSoundEnabled((prev) => !prev)}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title={soundEnabled ? 'Mute Sound FX' : 'Enable Sound FX'}
             className="p-1.5 sm:p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition"
           >
@@ -1012,10 +1017,12 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
+            type="button"
             onClick={() => {
               setAutoRotate((prev) => !prev);
               if (soundEnabled) playClickTone();
             }}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title={autoRotate ? 'Stop Orbiting' : 'Auto-Orbit Scene'}
             className={`p-1.5 sm:p-2 rounded-xl transition ${
               autoRotate ? 'bg-pink-600/30 text-pink-300 border border-pink-500/40' : 'text-slate-300 hover:bg-white/10'
@@ -1025,7 +1032,9 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
+            type="button"
             onClick={() => handleZoom('in')}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title="Zoom In to Read"
             className="p-1.5 sm:p-2 rounded-xl text-slate-300 hover:text-sky-300 hover:bg-white/10 transition"
           >
@@ -1033,7 +1042,9 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
+            type="button"
             onClick={() => handleZoom('out')}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title="Zoom Out"
             className="p-1.5 sm:p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition"
           >
@@ -1041,7 +1052,9 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
+            type="button"
             onClick={handleToggleFlip}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title="Flip Front / Back"
             className={`px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1 sm:gap-1.5 transition ${
               isFlipped
@@ -1054,7 +1067,13 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
-            onClick={() => setActivityOpen(true)}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActivityOpen(true);
+            }}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title="Launch Interactive Guessing Game (QR Codes for Audience)"
             className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-bold rounded-xl flex items-center gap-1.5 bg-gradient-to-r from-pink-600 via-rose-600 to-amber-600 hover:from-pink-500 hover:to-rose-500 text-white shadow-lg shadow-pink-600/30 transition-all active:scale-95"
           >
@@ -1064,7 +1083,9 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
+            type="button"
             onClick={() => setInfoOpen((prev) => !prev)}
+            style={{ pointerEvents: 'auto', cursor: 'pointer' }}
             title="Toggle Panel Details HUD"
             className={`p-1.5 sm:p-2 rounded-xl transition ${
               infoOpen ? 'bg-pink-500 text-white' : 'text-slate-300 hover:bg-white/10'
@@ -1199,7 +1220,13 @@ export default function ZigzagBrochure() {
                 </button>
 
                 <button
-                  onClick={() => setActivityOpen(true)}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setActivityOpen(true);
+                  }}
+                  style={{ pointerEvents: 'auto', cursor: 'pointer' }}
                   title="Interactive Activity: Guess the Picture with QR Codes"
                   className="px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-pink-600 to-amber-600 text-white shadow-md ring-1 ring-pink-400/50 hover:from-pink-500 hover:to-amber-500 transition"
                 >
