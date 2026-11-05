@@ -432,7 +432,7 @@ export function createPanel4IssuesCanvas(): HTMLCanvasElement {
   return canvas;
 }
 
-// PANEL 5: SUMMARY & GROUP 6 MEMBERS (NO MEANINGS)
+// PANEL 5: SUMMARY (NO DUPLICATE MEMBERS, NO MEANINGS)
 export function createPanel5ConclusionCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = 1600;
@@ -467,141 +467,153 @@ export function createPanel5ConclusionCanvas(): HTMLCanvasElement {
 
   // Top Header: ICT POLICIES AND ISSUES
   const headerBoxY = cardY + 70;
-  ctx.fillStyle = 'rgba(30, 41, 59, 0.8)';
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
   ctx.beginPath();
-  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, 280, [28]);
+  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, 260, [28]);
   ctx.fill();
   ctx.strokeStyle = '#38bdf8';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 3.5;
   ctx.stroke();
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 80px "Georgia", serif';
-  ctx.fillText('ICT POLICIES AND ISSUES', 800, headerBoxY + 120);
+  ctx.font = 'bold 84px "Georgia", serif';
+  ctx.fillText('ICT POLICIES AND ISSUES', 800, headerBoxY + 115);
 
   ctx.fillStyle = '#38bdf8';
-  ctx.font = 'bold 48px "Segoe UI", sans-serif';
-  ctx.fillText('GROUP 6', 800, headerBoxY + 215);
+  ctx.font = 'bold 44px "Segoe UI", sans-serif';
+  ctx.fillText('GROUP 6', 800, headerBoxY + 200);
 
-  // 2 Side-by-Side Review Columns (NO MEANINGS)
-  const colBoxY = cardY + 390;
-  const colBoxH = 680;
+  // 2 Side-by-Side Columns taking the full height (NO MEMBERS HERE)
+  const colBoxY = cardY + 370;
+  const colBoxH = 1780;
   const halfW = (cardW - 150) / 2;
 
-  // Policies Column
-  ctx.fillStyle = 'rgba(7, 36, 35, 0.85)';
+  // Left Column: ICT POLICIES
+  ctx.fillStyle = 'rgba(7, 36, 35, 0.9)';
   ctx.beginPath();
-  ctx.roundRect(cardX + 60, colBoxY, halfW, colBoxH, [24]);
+  ctx.roundRect(cardX + 60, colBoxY, halfW, colBoxH, [28]);
   ctx.fill();
   ctx.strokeStyle = '#2dd4bf';
-  ctx.lineWidth = 2.5;
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   ctx.fillStyle = '#2dd4bf';
-  ctx.font = 'bold 44px "Georgia", serif';
+  ctx.font = 'bold 54px "Georgia", serif';
   ctx.textAlign = 'center';
-  ctx.fillText('ICT POLICIES', cardX + 60 + halfW / 2, colBoxY + 80);
+  ctx.fillText('ICT POLICIES', cardX + 60 + halfW / 2, colBoxY + 95);
+
+  ctx.strokeStyle = 'rgba(45, 212, 191, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cardX + 110, colBoxY + 130);
+  ctx.lineTo(cardX + 60 + halfW - 50, colBoxY + 130);
+  ctx.stroke();
 
   const polItems = [
-    '1. DATA PRIVACY',
-    '2. ANTI-CYBERCRIME',
-    '3. COPYRIGHT',
-    '4. RESPONSIBLE USE',
+    { num: '1', title: 'DATA PRIVACY' },
+    { num: '2', title: 'ANTI-CYBERCRIME' },
+    { num: '3', title: 'COPYRIGHT' },
+    { num: '4', title: 'RESPONSIBLE USE OF TECHNOLOGY' },
   ];
-  polItems.forEach((title, i) => {
-    const itemY = colBoxY + 140 + i * 125;
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-    ctx.beginPath();
-    ctx.roundRect(cardX + 90, itemY, halfW - 60, 95, [16]);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 36px "Segoe UI", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(title, cardX + 120, itemY + 60);
-  });
 
-  // Issues Column
-  ctx.fillStyle = 'rgba(40, 11, 21, 0.85)';
-  ctx.beginPath();
-  ctx.roundRect(cardX + 90 + halfW, colBoxY, halfW, colBoxH, [24]);
-  ctx.fill();
-  ctx.strokeStyle = '#f43f5e';
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
+  const itemStartY = colBoxY + 170;
+  const itemH = 360;
+  const itemGap = 35;
 
-  ctx.fillStyle = '#f43f5e';
-  ctx.font = 'bold 44px "Georgia", serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('ICT ISSUES', cardX + 90 + halfW + halfW / 2, colBoxY + 80);
-
-  const issItems = [
-    '1. CYBERBULLYING',
-    '2. FAKE NEWS',
-    '3. INTERNET ADDICTION',
-    '4. PRIVACY ISSUES',
-  ];
-  issItems.forEach((title, i) => {
-    const itemY = colBoxY + 140 + i * 125;
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-    ctx.beginPath();
-    ctx.roundRect(cardX + 120 + halfW, itemY, halfW - 60, 95, [16]);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 36px "Segoe UI", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(title, cardX + 150 + halfW, itemY + 60);
-  });
-
-  // Bottom Box: Members List
-  const creditsY = cardY + 1110;
-  const creditsH = 1080;
-  ctx.fillStyle = 'rgba(21, 35, 68, 0.9)';
-  ctx.beginPath();
-  ctx.roundRect(cardX + 60, creditsY, cardW - 120, creditsH, [28]);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
-
-  ctx.fillStyle = '#38bdf8';
-  ctx.font = 'bold 48px "Segoe UI", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('MEMBERS :', 800, creditsY + 80);
-
-  const colW = (cardW - 200) / 2;
-  const colStartY = creditsY + 140;
-  const mRowH = 175;
-  const mGap = 35;
-
-  OFFICIAL_MEMBERS.forEach((name, idx) => {
-    const colIdx = idx < 4 ? 0 : 1;
-    const rowIdx = idx % 4;
-    const itemX = cardX + 90 + colIdx * (colW + 20);
-    const itemY = colStartY + rowIdx * (mRowH + mGap);
+  polItems.forEach((item, i) => {
+    const itemY = itemStartY + i * (itemH + itemGap);
 
     ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
     ctx.beginPath();
-    ctx.roundRect(itemX, itemY, colW, mRowH, [20]);
+    ctx.roundRect(cardX + 90, itemY, halfW - 60, itemH, [20]);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)';
+
+    ctx.strokeStyle = '#2dd4bf';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    ctx.fillStyle = '#0284c7';
+    // Number Badge
+    ctx.fillStyle = '#0f766e';
     ctx.beginPath();
-    ctx.roundRect(itemX + 30, itemY + 45, 85, 85, [16]);
+    ctx.roundRect(cardX + 120, itemY + 30, 80, 80, [16]);
     ctx.fill();
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 42px "Segoe UI", sans-serif';
+    ctx.font = 'bold 44px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(`${idx + 1}`, itemX + 72, itemY + 104);
+    ctx.fillText(item.num, cardX + 160, itemY + 86);
+
+    // Title
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'left';
+
+    if (item.title.length > 20) {
+      ctx.font = 'bold 40px "Georgia", serif';
+      ctx.fillText('RESPONSIBLE USE', cardX + 120, itemY + 190);
+      ctx.fillText('OF TECHNOLOGY', cardX + 120, itemY + 250);
+    } else {
+      ctx.font = 'bold 44px "Georgia", serif';
+      ctx.fillText(item.title, cardX + 120, itemY + 220);
+    }
+  });
+
+  // Right Column: ICT ISSUES
+  ctx.fillStyle = 'rgba(40, 11, 21, 0.9)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 90 + halfW, colBoxY, halfW, colBoxH, [28]);
+  ctx.fill();
+  ctx.strokeStyle = '#f43f5e';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 54px "Georgia", serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('ICT ISSUES', cardX + 90 + halfW + halfW / 2, colBoxY + 95);
+
+  ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cardX + 140 + halfW, colBoxY + 130);
+  ctx.lineTo(cardX + 90 + halfW + halfW - 50, colBoxY + 130);
+  ctx.stroke();
+
+  const issItems = [
+    { num: '1', title: 'CYBERBULLYING' },
+    { num: '2', title: 'FAKE NEWS' },
+    { num: '3', title: 'INTERNET ADDICTION' },
+    { num: '4', title: 'PRIVACY ISSUES' },
+  ];
+
+  issItems.forEach((item, i) => {
+    const itemY = itemStartY + i * (itemH + itemGap);
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 120 + halfW, itemY, halfW - 60, itemH, [20]);
+    ctx.fill();
+
+    ctx.strokeStyle = '#f43f5e';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Number Badge
+    ctx.fillStyle = '#be123c';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 150 + halfW, itemY + 30, 80, 80, [16]);
+    ctx.fill();
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 40px "Segoe UI", sans-serif';
+    ctx.font = 'bold 44px "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(item.num, cardX + 190 + halfW, itemY + 86);
+
+    // Title
+    ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'left';
-    ctx.fillText(name, itemX + 135, itemY + 104);
+    ctx.font = 'bold 44px "Georgia", serif';
+    ctx.fillText(item.title, cardX + 150 + halfW, itemY + 220);
   });
 
   return canvas;
