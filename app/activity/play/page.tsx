@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {
   ShieldCheck,
@@ -10,7 +10,9 @@ import {
   CheckCircle2,
   XCircle,
   Sparkles,
-  Send,
+  ChevronRight,
+  ChevronLeft,
+  Check,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getActivityById, ICT_ACTIVITIES, ActivityItem } from '@/lib/activityData';
@@ -20,13 +22,30 @@ interface QuestionCardProps {
 }
 
 function QuestionCard({ item }: QuestionCardProps) {
+  const router = useRouter();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [hasAnswered, setHasAnswered] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [typedGuess, setTypedGuess] = useState('');
 
-  const sendResponseToPresenter = (chosen: string, correct: boolean) => {
+  // Find next and previous questions across the activities list
+  const currentIndex = ICT_ACTIVITIES.findIndex((q) => q.id === item.id);
+  const prevItem = currentIndex > 0 ? ICT_ACTIVITIES[currentIndex - 1] : null;
+  const nextItem = currentIndex < ICT_ACTIVITIES.length - 1 ? ICT_ACTIVITIES[currentIndex + 1] : null;
+
+  const handleSelectOption = (option: string) => {
+    if (hasSubmitted) return; // Prevent changing after submission until retry
+    setSelectedOption(option);
+  };
+
+  const handleSubmitAnswer = () => {
+    if (!selectedOption) return;
+
+    const correct = selectedOption.toLowerCase().trim() === item.title.toLowerCase().trim();
+    setHasSubmitted(true);
+    setIsCorrect(correct);
+
+    // Send answer to the live presenter tally API
     try {
       fetch('/api/activity/responses', {
         method: 'POST',
@@ -34,21 +53,12 @@ function QuestionCard({ item }: QuestionCardProps) {
         body: JSON.stringify({
           questionId: item.id,
           isCorrect: correct,
-          selectedOption: chosen,
+          selectedOption,
         }),
       }).catch((err) => console.log('Response tally error', err));
     } catch {
       // Ignore background post error
     }
-  };
-
-  const handleSelectOption = (option: string) => {
-    const correct = option.toLowerCase().trim() === item.title.toLowerCase().trim();
-    setSelectedOption(option);
-    setHasAnswered(true);
-    setIsCorrect(correct);
-
-    sendResponseToPresenter(option, correct);
 
     if (correct) {
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
@@ -62,39 +72,42 @@ function QuestionCard({ item }: QuestionCardProps) {
     }
   };
 
-  const handleTextSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!typedGuess.trim()) return;
+  const handleTryAgain = () => {
+    setHasSubmitted(false);
+    setSelectedOption(null);
+  };
 
-    const normalizedGuess = typedGuess.toLowerCase().trim();
-    const normalizedAnswer = item.title.toLowerCase().trim();
-    const correct =
-      normalizedGuess === normalizedAnswer ||
-      normalizedAnswer.includes(normalizedGuess) ||
-      normalizedGuess.includes(normalizedAnswer);
-
-    setSelectedOption(typedGuess);
-    setHasAnswered(true);
-    setIsCorrect(correct);
-
-    sendResponseToPresenter(typedGuess, correct);
-
-    if (correct) {
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate([100, 50, 100]);
+  const handleGoNext = () => {
+    if (nextItem) {
+      router.push(`/activity/play?id=${nextItem.id}`);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      confetti({
-        particleCount: 90,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
+    }
+  };
+
+  const handleGoPrev = () => {
+    if (prevItem) {
+      router.push(`/activity/play?id=${prevItem.id}`);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
 
   const isPolicy = item.category === 'policies';
 
   return (
-    <div style={{ width: '100%', maxWidth: '440px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div
+      style={{
+        width: '100%',
+        maxWidth: '440px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        paddingBottom: '100px',
+      }}
+    >
       {/* Instruction Header */}
       <div
         style={{
@@ -124,11 +137,11 @@ function QuestionCard({ item }: QuestionCardProps) {
           What {isPolicy ? 'ICT Policy' : 'ICT Issue'} does this image represent?
         </h2>
         <p style={{ fontSize: '12px', color: '#cbd5e1', marginTop: '4px' }}>
-          Examine the clue picture below and tap your guess!
+          Examine the clue picture below, select your choice, and tap Submit!
         </p>
       </div>
 
-      {/* Clue Picture Card with EXPLICIT 250px Height (Never Collapses!) */}
+      {/* Clue Picture Card (Guaranteed 240px Height) */}
       <div
         style={{
           backgroundColor: '#0c0d14',
@@ -142,7 +155,7 @@ function QuestionCard({ item }: QuestionCardProps) {
           style={{
             position: 'relative',
             width: '100%',
-            height: '250px',
+            height: '210px',
             backgroundColor: '#050608',
             display: 'flex',
             alignItems: 'center',
@@ -171,7 +184,7 @@ function QuestionCard({ item }: QuestionCardProps) {
           }}
         >
           <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 600 }}>
-            {isPolicy ? 'ICT Policy Clue' : 'ICT Issue Clue'}
+            {isPolicy ? 'ICT Policy Challenge' : 'ICT Issue Challenge'}
           </span>
 
           <button
@@ -216,47 +229,7 @@ function QuestionCard({ item }: QuestionCardProps) {
         )}
       </div>
 
-      {/* Answer Feedback Banner */}
-      {hasAnswered && (
-        <div
-          style={{
-            padding: '14px 18px',
-            borderRadius: '16px',
-            backgroundColor: isCorrect ? 'rgba(6, 78, 59, 0.85)' : 'rgba(76, 5, 25, 0.85)',
-            border: isCorrect ? '2px solid #10b981' : '2px solid #f43f5e',
-            color: '#ffffff',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-            {isCorrect ? (
-              <CheckCircle2 className="w-6 h-6 text-emerald-300 shrink-0 mt-0.5" />
-            ) : (
-              <XCircle className="w-6 h-6 text-rose-300 shrink-0 mt-0.5" />
-            )}
-            <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
-                {isCorrect ? 'Correct! Fantastic job!' : 'Not quite right!'}
-              </h3>
-              <p style={{ fontSize: '13px', color: '#f1f5f9', marginTop: '4px', lineHeight: 1.4 }}>
-                {isCorrect ? (
-                  <>
-                    You correctly guessed{' '}
-                    <strong style={{ color: '#6ee7b7', textDecoration: 'underline' }}>
-                      {item.title}
-                    </strong>
-                    ! Your answer has been counted on the presenter screen.
-                  </>
-                ) : (
-                  'That was not the correct answer. You can try tapping another choice or wait for the presenter to reveal!'
-                )}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Multiple Choice Options with HIGH CONTRAST & READABLE TEXT */}
+      {/* Multiple Choice Options */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <label
           style={{
@@ -268,7 +241,7 @@ function QuestionCard({ item }: QuestionCardProps) {
             paddingLeft: '4px',
           }}
         >
-          Choose an Option:
+          Select an Option:
         </label>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -282,8 +255,8 @@ function QuestionCard({ item }: QuestionCardProps) {
             let border = '1.5px solid rgba(255, 255, 255, 0.2)';
             let textColor = '#ffffff';
 
-            if (hasAnswered) {
-              if (isSelected) {
+            if (isSelected) {
+              if (hasSubmitted) {
                 if (isCorrect) {
                   bg = '#064e3b';
                   border = '2px solid #10b981';
@@ -293,11 +266,17 @@ function QuestionCard({ item }: QuestionCardProps) {
                   border = '2px solid #f43f5e';
                   textColor = '#fda4af';
                 }
-              } else if (isActualCorrect && isCorrect) {
-                bg = 'rgba(6, 78, 59, 0.4)';
-                border = '1.5px solid #10b981';
-                textColor = '#6ee7b7';
+              } else {
+                // Selected before submit: glowing blue highlight
+                bg = '#1e293b';
+                border = '2px solid #38bdf8';
+                textColor = '#ffffff';
               }
+            } else if (hasSubmitted && isActualCorrect && !isCorrect) {
+              // Highlight the real answer if they got it wrong
+              bg = 'rgba(6, 78, 59, 0.4)';
+              border = '1.5px solid #10b981';
+              textColor = '#6ee7b7';
             }
 
             return (
@@ -306,11 +285,11 @@ function QuestionCard({ item }: QuestionCardProps) {
                 type="button"
                 onClick={() => handleSelectOption(option)}
                 style={{
-                  cursor: 'pointer',
+                  cursor: hasSubmitted ? 'default' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '12px',
-                  padding: '12px 16px',
+                  padding: '13px 16px',
                   borderRadius: '12px',
                   backgroundColor: bg,
                   border: border,
@@ -318,7 +297,7 @@ function QuestionCard({ item }: QuestionCardProps) {
                   fontSize: '14px',
                   fontWeight: 700,
                   textAlign: 'left',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  boxShadow: isSelected ? '0 0 12px rgba(56, 189, 248, 0.3)' : '0 4px 12px rgba(0,0,0,0.3)',
                   transition: 'all 0.15s ease',
                 }}
               >
@@ -333,80 +312,240 @@ function QuestionCard({ item }: QuestionCardProps) {
                     fontSize: '13px',
                     fontWeight: 800,
                     backgroundColor: isSelected
-                      ? isCorrect
-                        ? '#10b981'
-                        : '#f43f5e'
+                      ? hasSubmitted
+                        ? isCorrect
+                          ? '#10b981'
+                          : '#f43f5e'
+                        : '#0284c7'
                       : '#2a2e40',
-                    color: isSelected && isCorrect ? '#000000' : '#ffffff',
+                    color: isSelected && hasSubmitted && isCorrect ? '#000000' : '#ffffff',
                     flexShrink: 0,
                   }}
                 >
                   {letter}
                 </span>
                 <span style={{ flex: 1 }}>{option}</span>
+                {isSelected && !hasSubmitted && (
+                  <Check className="w-4 h-4 text-sky-400 shrink-0" />
+                )}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Or Type Your Exact Guess */}
-      <div
-        style={{
-          backgroundColor: '#111219',
-          border: '1px solid rgba(255, 255, 255, 0.14)',
-          borderRadius: '16px',
-          padding: '14px 16px',
-        }}
-      >
-        <label
+      {/* SUBMIT BUTTON (When option is selected and not yet submitted) */}
+      {!hasSubmitted && (
+        <button
+          type="button"
+          onClick={handleSubmitAnswer}
+          disabled={!selectedOption}
           style={{
-            fontSize: '12px',
-            fontWeight: 700,
-            color: '#cbd5e1',
-            display: 'block',
-            marginBottom: '8px',
+            cursor: selectedOption ? 'pointer' : 'not-allowed',
+            width: '100%',
+            padding: '14px 20px',
+            borderRadius: '14px',
+            background: selectedOption
+              ? 'linear-gradient(to right, #ec4899, #f43f5e)'
+              : '#1f2230',
+            color: selectedOption ? '#ffffff' : '#64748b',
+            border: selectedOption ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+            fontSize: '15px',
+            fontWeight: 800,
+            letterSpacing: '0.02em',
+            boxShadow: selectedOption ? '0 8px 24px rgba(236, 72, 153, 0.4)' : 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            transition: 'all 0.2s ease',
           }}
         >
-          Or type your exact guess:
-        </label>
-        <form onSubmit={handleTextSubmit} style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="text"
-            value={typedGuess}
-            onChange={(e) => setTypedGuess(e.target.value)}
-            placeholder="e.g. Data Privacy"
+          <span>{selectedOption ? 'Submit My Guess' : 'Tap an Option Above to Submit'}</span>
+        </button>
+      )}
+
+      {/* RESULT CARD & NEXT QUESTION (Appears after submitting) */}
+      {hasSubmitted && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            marginTop: '4px',
+          }}
+        >
+          {/* Feedback Card */}
+          <div
             style={{
-              flex: 1,
-              backgroundColor: '#07080c',
-              border: '1.5px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '10px',
-              padding: '10px 14px',
-              fontSize: '13px',
+              padding: '14px 18px',
+              borderRadius: '16px',
+              backgroundColor: isCorrect ? 'rgba(6, 78, 59, 0.9)' : 'rgba(76, 5, 25, 0.9)',
+              border: isCorrect ? '2px solid #10b981' : '2px solid #f43f5e',
               color: '#ffffff',
-              outline: 'none',
-            }}
-          />
-          <button
-            type="submit"
-            style={{
-              cursor: 'pointer',
-              background: 'linear-gradient(to right, #db2777, #f43f5e)',
-              color: '#ffffff',
-              fontWeight: 800,
-              fontSize: '13px',
-              padding: '10px 18px',
-              borderRadius: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              border: 'none',
-              boxShadow: '0 4px 12px rgba(219, 39, 119, 0.4)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
             }}
           >
-            <Send className="w-3.5 h-3.5" /> Submit
-          </button>
-        </form>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+              {isCorrect ? (
+                <CheckCircle2 className="w-6 h-6 text-emerald-300 shrink-0 mt-0.5" />
+              ) : (
+                <XCircle className="w-6 h-6 text-rose-300 shrink-0 mt-0.5" />
+              )}
+              <div style={{ flex: 1 }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
+                  {isCorrect ? 'Correct! Fantastic job!' : 'Not quite right!'}
+                </h3>
+                <p style={{ fontSize: '13px', color: '#f1f5f9', marginTop: '4px', lineHeight: 1.4 }}>
+                  {isCorrect ? (
+                    <>
+                      You correctly guessed{' '}
+                      <strong style={{ color: '#6ee7b7', textDecoration: 'underline' }}>
+                        {item.title}
+                      </strong>
+                      ! Your vote has been counted on the presenter screen.
+                    </>
+                  ) : (
+                    <>
+                      The correct answer is{' '}
+                      <strong style={{ color: '#fda4af' }}>{item.title}</strong>.
+                    </>
+                  )}
+                </p>
+
+                {!isCorrect && (
+                  <button
+                    type="button"
+                    onClick={handleTryAgain}
+                    style={{
+                      cursor: 'pointer',
+                      marginTop: '8px',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      padding: '4px 10px',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    Change / Re-submit Guess
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Prominent NEXT QUESTION Button */}
+          {nextItem ? (
+            <button
+              type="button"
+              onClick={handleGoNext}
+              style={{
+                cursor: 'pointer',
+                width: '100%',
+                padding: '14px 20px',
+                borderRadius: '14px',
+                background: 'linear-gradient(to right, #10b981, #059669)',
+                color: '#ffffff',
+                border: 'none',
+                fontSize: '15px',
+                fontWeight: 900,
+                letterSpacing: '0.02em',
+                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span>
+                {item.questionNumber === 5 && isPolicy
+                  ? 'Proceed to Part 2: ICT Issues'
+                  : `Next Question (${nextItem.questionNumber} of ${nextItem.totalInCategory})`}
+              </span>
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          ) : (
+            <div
+              style={{
+                padding: '12px',
+                borderRadius: '12px',
+                backgroundColor: '#161824',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                textAlign: 'center',
+                color: '#34d399',
+                fontSize: '14px',
+                fontWeight: 800,
+              }}
+            >
+              You completed all questions in the activity!
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Bottom Step Navigation Row (Prev & Next buttons always available) */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginTop: '6px',
+          paddingTop: '10px',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+        }}
+      >
+        <button
+          type="button"
+          onClick={handleGoPrev}
+          disabled={!prevItem}
+          style={{
+            cursor: prevItem ? 'pointer' : 'not-allowed',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            backgroundColor: '#1b1e2b',
+            color: prevItem ? '#ffffff' : '#64748b',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            padding: '8px 14px',
+            borderRadius: '10px',
+            fontSize: '12px',
+            fontWeight: 700,
+            opacity: prevItem ? 1 : 0.4,
+          }}
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <span>Previous</span>
+        </button>
+
+        <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace', fontWeight: 600 }}>
+          {item.questionNumber} of {item.totalInCategory}
+        </span>
+
+        <button
+          type="button"
+          onClick={handleGoNext}
+          disabled={!nextItem}
+          style={{
+            cursor: nextItem ? 'pointer' : 'not-allowed',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            backgroundColor: '#1b1e2b',
+            color: nextItem ? '#ffffff' : '#64748b',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            padding: '8px 14px',
+            borderRadius: '10px',
+            fontSize: '12px',
+            fontWeight: 700,
+            opacity: nextItem ? 1 : 0.4,
+          }}
+        >
+          <span>Next</span>
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
@@ -427,7 +566,7 @@ function PlayContent() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '14px 16px 40px 16px',
+        padding: '14px 16px 120px 16px',
       }}
     >
       {/* Top Banner */}
