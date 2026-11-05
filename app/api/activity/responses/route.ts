@@ -11,6 +11,11 @@ interface QuestionStats {
 // Global variable kept warm during the server process
 const statsStore: Record<string, QuestionStats> = {};
 
+// Presenter-synchronized live active question state
+let activeQuestionId: string = 'policy-data-privacy';
+let activeCategory: 'policies' | 'issues' = 'policies';
+let activeIndex: number = 0;
+
 function getOrCreateStats(questionId: string): QuestionStats {
   if (!statsStore[questionId]) {
     statsStore[questionId] = {
@@ -27,20 +32,36 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const questionId = searchParams.get('questionId');
 
-  if (!questionId) {
-    return NextResponse.json(statsStore);
-  }
+  const targetId = questionId || activeQuestionId;
+  const stats = getOrCreateStats(targetId);
 
-  const stats = getOrCreateStats(questionId);
   return NextResponse.json({
-    questionId,
+    questionId: targetId,
     stats,
+    activeQuestionId,
+    activeCategory,
+    activeIndex,
   });
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    // 1. Presenter synchronizes active question across all connected devices
+    if (body.setActiveQuestionId) {
+      activeQuestionId = body.setActiveQuestionId;
+      if (body.category) activeCategory = body.category;
+      if (typeof body.index === 'number') activeIndex = body.index;
+
+      return NextResponse.json({
+        success: true,
+        activeQuestionId,
+        activeCategory,
+        activeIndex,
+      });
+    }
+
     const { questionId, isCorrect, selectedOption, reset } = body;
 
     if (!questionId) {
@@ -54,7 +75,7 @@ export async function POST(request: Request) {
         total: 0,
         answers: {},
       };
-      return NextResponse.json({ success: true, stats: statsStore[questionId] });
+      return NextResponse.json({ success: true, stats: statsStore[questionId], activeQuestionId });
     }
 
     const stats = getOrCreateStats(questionId);
@@ -72,6 +93,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       stats,
+      activeQuestionId,
     });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request', details: String(err) }, { status: 500 });

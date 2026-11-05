@@ -772,6 +772,21 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
     return `${origin}/activity/play?id=${currentItem.id}`;
   }, [currentItem.id]);
 
+  // Synchronize active question to server so all audience devices auto-advance
+  useEffect(() => {
+    if (isOpen && currentItem?.id) {
+      fetch('/api/activity/responses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          setActiveQuestionId: currentItem.id,
+          category,
+          index: currentIndex,
+        }),
+      }).catch(() => {});
+    }
+  }, [isOpen, currentItem?.id, category, currentIndex]);
+
   // Generate QR Code whenever mobilePlayUrl changes
   useEffect(() => {
     let isMounted = true;

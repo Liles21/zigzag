@@ -10,8 +10,6 @@ import {
   CheckCircle2,
   XCircle,
   Sparkles,
-  ChevronRight,
-  ChevronLeft,
   Check,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -27,11 +25,6 @@ function QuestionCard({ item }: QuestionCardProps) {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showHint, setShowHint] = useState(false);
-
-  // Find next and previous questions across the activities list
-  const currentIndex = ICT_ACTIVITIES.findIndex((q) => q.id === item.id);
-  const prevItem = currentIndex > 0 ? ICT_ACTIVITIES[currentIndex - 1] : null;
-  const nextItem = currentIndex < ICT_ACTIVITIES.length - 1 ? ICT_ACTIVITIES[currentIndex + 1] : null;
 
   const handleSelectOption = (option: string) => {
     if (hasSubmitted) return; // Prevent changing after submission until retry
@@ -72,28 +65,29 @@ function QuestionCard({ item }: QuestionCardProps) {
     }
   };
 
-  const handleTryAgain = () => {
-    setHasSubmitted(false);
-    setSelectedOption(null);
-  };
+  // Real-time synchronization: Auto-advance whenever the presenter advances on the website
+  React.useEffect(() => {
+    let isMounted = true;
+    const syncWithPresenter = () => {
+      fetch('/api/activity/responses')
+        .then((res) => res.json())
+        .then((data) => {
+          if (isMounted && data.activeQuestionId && data.activeQuestionId !== item.id) {
+            router.push(`/activity/play?id=${data.activeQuestionId}`);
+            if (typeof window !== 'undefined') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }
+        })
+        .catch(() => {});
+    };
 
-  const handleGoNext = () => {
-    if (nextItem) {
-      router.push(`/activity/play?id=${nextItem.id}`);
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }
-  };
-
-  const handleGoPrev = () => {
-    if (prevItem) {
-      router.push(`/activity/play?id=${prevItem.id}`);
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }
-  };
+    const interval = setInterval(syncWithPresenter, 1500);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [item.id, router]);
 
   const isPolicy = item.category === 'policies';
 
@@ -412,140 +406,81 @@ function QuestionCard({ item }: QuestionCardProps) {
                     </>
                   )}
                 </p>
-
-                {!isCorrect && (
-                  <button
-                    type="button"
-                    onClick={handleTryAgain}
-                    style={{
-                      cursor: 'pointer',
-                      marginTop: '8px',
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      color: '#ffffff',
-                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      padding: '4px 10px',
-                      borderRadius: '8px',
-                    }}
-                  >
-                    Change / Re-submit Guess
-                  </button>
-                )}
               </div>
             </div>
           </div>
 
-          {/* Prominent NEXT QUESTION Button */}
-          {nextItem ? (
-            <button
-              type="button"
-              onClick={handleGoNext}
-              style={{
-                cursor: 'pointer',
-                width: '100%',
-                padding: '14px 20px',
-                borderRadius: '14px',
-                background: 'linear-gradient(to right, #10b981, #059669)',
-                color: '#ffffff',
-                border: 'none',
-                fontSize: '15px',
-                fontWeight: 900,
-                letterSpacing: '0.02em',
-                boxShadow: '0 8px 24px rgba(16, 185, 129, 0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <span>
-                {item.questionNumber === 5 && isPolicy
-                  ? 'Proceed to Part 2: ICT Issues'
-                  : `Next Question (${nextItem.questionNumber} of ${nextItem.totalInCategory})`}
-              </span>
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          ) : (
+          {/* PRESENTER-LED LIVE SYNC CARD (Mobile waits for website to advance) */}
+          <div
+            style={{
+              padding: '16px 20px',
+              borderRadius: '16px',
+              backgroundColor: '#0c0d16',
+              border: '1px solid rgba(56, 189, 248, 0.3)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              gap: '8px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+            }}
+          >
             <div
               style={{
-                padding: '12px',
-                borderRadius: '12px',
-                backgroundColor: '#161824',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                textAlign: 'center',
-                color: '#34d399',
-                fontSize: '14px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                color: '#38bdf8',
+                fontSize: '13px',
                 fontWeight: 800,
               }}
             >
-              You completed all questions in the activity!
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '9999px',
+                  backgroundColor: '#38bdf8',
+                  boxShadow: '0 0 10px #38bdf8',
+                }}
+              />
+              Answer Locked & Submitted!
             </div>
-          )}
+            <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: 1.4 }}>
+              Waiting for the presenter to move to the next question...
+            </p>
+            <span
+              style={{
+                fontSize: '11px',
+                color: '#a5f3fc',
+                backgroundColor: 'rgba(56, 189, 248, 0.12)',
+                padding: '4px 12px',
+                borderRadius: '9999px',
+                border: '1px solid rgba(56, 189, 248, 0.25)',
+                fontWeight: 700,
+              }}
+            >
+              Your screen will advance automatically!
+            </span>
+          </div>
         </div>
       )}
 
-      {/* Bottom Step Navigation Row (Prev & Next buttons always available) */}
+      {/* Synchronized Question Status Tracker */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           marginTop: '6px',
           paddingTop: '10px',
           borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         }}
       >
-        <button
-          type="button"
-          onClick={handleGoPrev}
-          disabled={!prevItem}
-          style={{
-            cursor: prevItem ? 'pointer' : 'not-allowed',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            backgroundColor: '#1b1e2b',
-            color: prevItem ? '#ffffff' : '#64748b',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            padding: '8px 14px',
-            borderRadius: '10px',
-            fontSize: '12px',
-            fontWeight: 700,
-            opacity: prevItem ? 1 : 0.4,
-          }}
-        >
-          <ChevronLeft className="w-4 h-4" />
-          <span>Previous</span>
-        </button>
-
-        <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace', fontWeight: 600 }}>
-          {item.questionNumber} of {item.totalInCategory}
+        <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace', fontWeight: 700 }}>
+          {isPolicy ? 'Part 1: ICT Policies' : 'Part 2: ICT Issues'} • Question {item.questionNumber} of {item.totalInCategory}
         </span>
-
-        <button
-          type="button"
-          onClick={handleGoNext}
-          disabled={!nextItem}
-          style={{
-            cursor: nextItem ? 'pointer' : 'not-allowed',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            backgroundColor: '#1b1e2b',
-            color: nextItem ? '#ffffff' : '#64748b',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            padding: '8px 14px',
-            borderRadius: '10px',
-            fontSize: '12px',
-            fontWeight: 700,
-            opacity: nextItem ? 1 : 0.4,
-          }}
-        >
-          <span>Next</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
       </div>
     </div>
   );
