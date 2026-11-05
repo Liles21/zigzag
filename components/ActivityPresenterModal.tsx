@@ -47,6 +47,66 @@ function PresenterQuestionCard({
   handleNext,
 }: PresenterQuestionCardProps) {
   const [isAnswerRevealed, setIsAnswerRevealed] = useState<boolean>(false);
+  const [responseStats, setResponseStats] = useState<{ correct: number; wrong: number; total: number }>({
+    correct: 0,
+    wrong: 0,
+    total: 0,
+  });
+
+  // Poll live response stats from mobile audience every 2 seconds
+  useEffect(() => {
+    let isMounted = true;
+    const fetchStats = () => {
+      fetch(`/api/activity/responses?questionId=${currentItem.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (isMounted && data.stats) {
+            setResponseStats(data.stats);
+          }
+        })
+        .catch(() => {});
+    };
+
+    fetchStats();
+    const interval = setInterval(fetchStats, 2000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [currentItem.id]);
+
+  const handleSimulateResponse = (correct: boolean) => {
+    fetch('/api/activity/responses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        questionId: currentItem.id,
+        isCorrect: correct,
+        selectedOption: correct ? currentItem.title : 'Incorrect Option',
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.stats) setResponseStats(data.stats);
+      })
+      .catch(() => {});
+  };
+
+  const handleResetVotes = () => {
+    fetch('/api/activity/responses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        questionId: currentItem.id,
+        reset: true,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.stats) setResponseStats(data.stats);
+      })
+      .catch(() => {});
+  };
 
   const handleToggleReveal = () => {
     const nextState = !isAnswerRevealed;
@@ -250,6 +310,246 @@ function PresenterQuestionCard({
               <Sparkles className="w-3.5 h-3.5" />
               <span>Reveals here when you click &quot;Show Correct Answer&quot;</span>
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* LIVE AUDIENCE RESPONSES SCORECARD (Shows Correct vs Wrong Answers) */}
+      <div
+        style={{
+          backgroundColor: '#0c0d14',
+          border: '1px solid rgba(255, 255, 255, 0.16)',
+          borderRadius: '16px',
+          padding: '14px 18px',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '10px',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                fontSize: '12px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#cbd5e1',
+              }}
+            >
+              Audience Response Tally
+            </span>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#f472b6',
+                backgroundColor: 'rgba(236, 72, 153, 0.15)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                border: '1px solid rgba(236, 72, 153, 0.3)',
+              }}
+            >
+              {responseStats.total} {responseStats.total === 1 ? 'Submission' : 'Submissions'}
+            </span>
+          </div>
+
+          {/* Quick Demo Controls for Presenter */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <button
+              type="button"
+              onClick={() => handleSimulateResponse(true)}
+              style={{
+                cursor: 'pointer',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#34d399',
+                backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                padding: '3px 8px',
+                borderRadius: '6px',
+              }}
+              title="Add 1 simulated correct vote (for testing)"
+            >
+              +1 Correct
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSimulateResponse(false)}
+              style={{
+                cursor: 'pointer',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#fb7185',
+                backgroundColor: 'rgba(244, 63, 94, 0.15)',
+                border: '1px solid rgba(244, 63, 94, 0.3)',
+                padding: '3px 8px',
+                borderRadius: '6px',
+              }}
+              title="Add 1 simulated wrong vote (for testing)"
+            >
+              +1 Wrong
+            </button>
+            {responseStats.total > 0 && (
+              <button
+                type="button"
+                onClick={handleResetVotes}
+                style={{
+                  cursor: 'pointer',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#94a3b8',
+                  backgroundColor: '#1f2230',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                }}
+              >
+                Reset
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 2 Big Score Cards: Correct vs Wrong */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* CORRECT ANSWERS BOX */}
+          <div
+            style={{
+              backgroundColor: 'rgba(6, 78, 59, 0.35)',
+              border: '2px solid #10b981',
+              borderRadius: '12px',
+              padding: '10px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: '#10b981',
+                  color: '#000000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 900,
+                }}
+              >
+                <Check className="w-5 h-5 stroke-[3]" />
+              </div>
+              <div>
+                <span style={{ fontSize: '14px', fontWeight: 900, color: '#6ee7b7', display: 'block' }}>
+                  Got It Correct
+                </span>
+                <span style={{ fontSize: '11px', color: '#a7f3d0' }}>
+                  {responseStats.total > 0
+                    ? `${Math.round((responseStats.correct / responseStats.total) * 100)}% accuracy`
+                    : 'Awaiting answers'}
+                </span>
+              </div>
+            </div>
+            <span
+              style={{
+                fontSize: '28px',
+                fontWeight: 900,
+                color: '#34d399',
+                fontFamily: 'monospace',
+              }}
+            >
+              {responseStats.correct}
+            </span>
+          </div>
+
+          {/* WRONG ANSWERS BOX */}
+          <div
+            style={{
+              backgroundColor: 'rgba(76, 5, 25, 0.35)',
+              border: '2px solid #f43f5e',
+              borderRadius: '12px',
+              padding: '10px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f43f5e',
+                  color: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 900,
+                }}
+              >
+                <X className="w-5 h-5 stroke-[3]" />
+              </div>
+              <div>
+                <span style={{ fontSize: '14px', fontWeight: 900, color: '#fda4af', display: 'block' }}>
+                  Got It Wrong
+                </span>
+                <span style={{ fontSize: '11px', color: '#fecdd3' }}>
+                  {responseStats.total > 0
+                    ? `${Math.round((responseStats.wrong / responseStats.total) * 100)}% incorrect`
+                    : 'Awaiting answers'}
+                </span>
+              </div>
+            </div>
+            <span
+              style={{
+                fontSize: '28px',
+                fontWeight: 900,
+                color: '#fb7185',
+                fontFamily: 'monospace',
+              }}
+            >
+              {responseStats.wrong}
+            </span>
+          </div>
+        </div>
+
+        {/* Live Colored Split Bar */}
+        {responseStats.total > 0 && (
+          <div
+            style={{
+              width: '100%',
+              height: '10px',
+              borderRadius: '9999px',
+              backgroundColor: '#1f2230',
+              overflow: 'hidden',
+              display: 'flex',
+              marginTop: '10px',
+            }}
+          >
+            <div
+              style={{
+                width: `${(responseStats.correct / responseStats.total) * 100}%`,
+                backgroundColor: '#10b981',
+                transition: 'width 0.4s ease',
+              }}
+            />
+            <div
+              style={{
+                width: `${(responseStats.wrong / responseStats.total) * 100}%`,
+                backgroundColor: '#f43f5e',
+                transition: 'width 0.4s ease',
+              }}
+            />
           </div>
         )}
       </div>
