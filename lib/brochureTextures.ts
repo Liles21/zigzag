@@ -360,47 +360,48 @@ export function createPanel1CoverCanvas(): HTMLCanvasElement {
   ctx.stroke();
 
   const members = [
-    { num: '1', name: 'Romoculo, Romick', role: 'Lead Presenter', roleColor: '#f472b6', lead: true },
-    { num: '2', name: 'Timbal, Angela', role: 'Policy Research', roleColor: '#38bdf8' },
-    { num: '3', name: 'Atecibo, Roserie', role: 'Ethics Analyst', roleColor: '#cbd5e1' },
-    { num: '4', name: 'Sanchez, Jovine', role: 'Cybersecurity', roleColor: '#34d399' },
-    { num: '5', name: 'Tabogon, Rhea Jane', role: 'Accessibility', roleColor: '#facc15' },
-    { num: '6', name: 'Salado, Charisse', role: 'Digital Rights', roleColor: '#c084fc' },
-    { num: '7', name: 'Quijano, Jeromel', role: 'Documentation', roleColor: '#cbd5e1' },
+    { num: '1', name: 'Charlene Mae G. Sabado', role: 'Digital Rights', roleColor: '#c084fc', lead: false },
+    { num: '2', name: 'Jocine P. Sanchez', role: 'Cybersecurity', roleColor: '#34d399', lead: false },
+    { num: '3', name: 'Rhea jean C. Tabugon', role: 'Accessibility', roleColor: '#facc15', lead: false },
+    { num: '4', name: 'Angela Timbal', role: 'Policy Research', roleColor: '#38bdf8', lead: false },
+    { num: '5', name: 'Jeramel L. Quijas', role: 'Documentation', roleColor: '#a7f3d0', lead: false },
+    { num: '6', name: 'Romnick P. Ramacula', role: 'Lead Presenter', roleColor: '#f472b6', lead: true },
+    { num: '7', name: 'Jenelly Ramal', role: 'Ethics & Society', roleColor: '#fda4af', lead: false },
+    { num: '8', name: 'Rose Marie V. Precioso', role: 'Technology Analyst', roleColor: '#93c5fd', lead: false },
   ];
 
-  const rowStartY = groupCardY + 175;
-  const rowH = 122;
-  const rowGap = 16;
+  const rowStartY = groupCardY + 160;
+  const rowH = 98;
+  const rowGap = 10;
 
   members.forEach((m, idx) => {
     const rY = rowStartY + idx * (rowH + rowGap);
 
-    ctx.fillStyle = m.lead ? 'rgba(236, 72, 153, 0.18)' : 'rgba(255, 255, 255, 0.06)';
+    ctx.fillStyle = m.lead ? 'rgba(236, 72, 153, 0.22)' : 'rgba(255, 255, 255, 0.06)';
     ctx.beginPath();
-    ctx.roundRect(cardX + 90, rY, cardW - 180, rowH, [20]);
+    ctx.roundRect(cardX + 90, rY, cardW - 180, rowH, [18]);
     ctx.fill();
 
-    ctx.strokeStyle = m.lead ? 'rgba(236, 72, 153, 0.5)' : 'rgba(255, 255, 255, 0.1)';
+    ctx.strokeStyle = m.lead ? 'rgba(236, 72, 153, 0.55)' : 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = m.lead ? 2.5 : 1.5;
     ctx.stroke();
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 44px "Segoe UI", sans-serif';
+    ctx.font = 'bold 36px "Segoe UI", sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(`${m.num}. ${m.name}`, cardX + 130, rY + 76);
+    ctx.fillText(`${m.num}. ${m.name}`, cardX + 130, rY + 62);
 
     ctx.fillStyle = m.roleColor;
-    ctx.font = '600 34px "Segoe UI", sans-serif';
+    ctx.font = '600 30px "Segoe UI", sans-serif';
     ctx.textAlign = 'right';
-    ctx.fillText(m.role, cardX + cardW - 130, rY + 76);
+    ctx.fillText(m.role, cardX + cardW - 130, rY + 62);
   });
 
   // Footer Tagline
   ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
   ctx.font = '24px "Segoe UI", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Cover Frontpage • 3D Zigzag Accordion Portfolio', 800, groupCardY + groupCardH - 35);
+  ctx.fillText('Cover Frontpage • 3D Zigzag Accordion Portfolio', 800, groupCardY + groupCardH - 25);
 
   return canvas;
 }
@@ -1565,58 +1566,53 @@ export function createPanel5BackCanvas(): HTMLCanvasElement {
   ctx.lineTo(cardX + cardW - 120, 800);
   ctx.stroke();
 
-  // Lead Presenter Highlight
-  const lY = 860;
+  // Official Group 6 Credits Table (All 8 Members)
+  const tY = 850;
+  const tH = 990;
   ctx.fillStyle = 'rgba(15, 3, 9, 0.75)';
   ctx.beginPath();
-  ctx.roundRect(cardX + 100, lY, cardW - 200, 220, [24]);
+  ctx.roundRect(cardX + 100, tY, cardW - 200, tH, [28]);
   ctx.fill();
-  ctx.strokeStyle = '#f472b6';
-  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(244, 114, 182, 0.35)';
+  ctx.lineWidth = 2.5;
   ctx.stroke();
 
   ctx.fillStyle = '#f472b6';
-  ctx.font = 'bold 30px "Segoe UI", sans-serif';
-  ctx.fillText('LEAD RESEARCHER & PRESENTER', 800, lY + 70);
+  ctx.font = 'bold 34px "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('OFFICIAL GROUP 6 RESEARCH & PRESENTATION TEAM', 800, tY + 65);
 
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 56px "Georgia", serif';
-  ctx.fillText('Romoculo, Romick', 800, lY + 145);
-
-  // Group Contributors Table
   const teamMembers = [
-    'Timbal, Angela',
-    'Atecibo, Roserie',
-    'Sanchez, Jovine',
-    'Tabogon, Rhea Jane',
-    'Salado, Charisse',
-    'Quijano, Jeromel',
+    { num: '1', name: 'Charlene Mae G. Sabado', role: 'Digital Rights & Policies', color: '#c084fc' },
+    { num: '2', name: 'Jocine P. Sanchez', role: 'Cybersecurity Analyst', color: '#34d399' },
+    { num: '3', name: 'Rhea jean C. Tabugon', role: 'Digital Accessibility', color: '#facc15' },
+    { num: '4', name: 'Angela Timbal', role: 'Policy Research', color: '#38bdf8' },
+    { num: '5', name: 'Jeramel L. Quijas', role: 'Documentation & Media', color: '#a7f3d0' },
+    { num: '6', name: 'Romnick P. Ramacula', role: 'Lead Presenter', color: '#f472b6' },
+    { num: '7', name: 'Jenelly Ramal', role: 'Ethics & Society', color: '#fda4af' },
+    { num: '8', name: 'Rose Marie V. Precioso', role: 'Educational Technology', color: '#93c5fd' },
   ];
 
-  const tY = 1140;
-  ctx.fillStyle = 'rgba(15, 3, 9, 0.6)';
-  ctx.beginPath();
-  ctx.roundRect(cardX + 100, tY, cardW - 200, 740, [24]);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(244, 114, 182, 0.3)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  ctx.fillStyle = '#fbcfe8';
-  ctx.font = 'bold 34px "Segoe UI", sans-serif';
-  ctx.fillText('CONTRIBUTING RESEARCH TEAM', 800, tY + 75);
-
   teamMembers.forEach((member, mIdx) => {
-    const rowY = tY + 140 + mIdx * 90;
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    const rowY = tY + 130 + mIdx * 102;
+    ctx.fillStyle = member.role === 'Lead Presenter' ? 'rgba(236, 72, 153, 0.18)' : 'rgba(255, 255, 255, 0.07)';
     ctx.beginPath();
-    ctx.roundRect(cardX + 150, rowY - 40, cardW - 300, 70, [14]);
+    ctx.roundRect(cardX + 140, rowY - 36, cardW - 280, 84, [16]);
     ctx.fill();
 
+    ctx.strokeStyle = member.role === 'Lead Presenter' ? 'rgba(236, 72, 153, 0.5)' : 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.textAlign = 'left';
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 38px "Segoe UI", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(member, 800, rowY + 10);
+    ctx.font = 'bold 36px "Segoe UI", sans-serif';
+    ctx.fillText(`${member.num}. ${member.name}`, cardX + 180, rowY + 18);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = member.color;
+    ctx.font = '600 28px "Segoe UI", sans-serif';
+    ctx.fillText(member.role, cardX + cardW - 180, rowY + 18);
   });
 
   // Thank You Banner

@@ -671,11 +671,12 @@ function PlayContent() {
           fontSize: '11px',
           color: '#64748b',
           maxWidth: '440px',
-          lineHeight: 1.4,
+          lineHeight: 1.5,
         }}
       >
-        ICT Policies & Issues Presentation Portfolio • Group 6 • Romoculo, Timbal, Atecibo,
-        Sanchez, Tabogon, Salado, Quijano
+        ICT Policies & Issues Presentation Portfolio • Group 6
+        <br />
+        Sabado • Sanchez • Tabugon • Timbal • Quijas • Ramacula • Ramal • Precioso
       </footer>
     </div>
   );

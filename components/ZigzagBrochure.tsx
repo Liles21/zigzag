@@ -1317,32 +1317,36 @@ export default function ZigzagBrochure() {
                   </div>
                   <ul className="text-xs space-y-1.5 text-slate-300">
                     <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-semibold text-white">1. Romoculo, Romick</span>
+                      <span className="font-medium text-slate-200">1. Charlene Mae G. Sabado</span>
+                      <span className="text-[10px] text-purple-300">Digital Rights</span>
+                    </li>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
+                      <span className="font-medium text-slate-200">2. Jocine P. Sanchez</span>
+                      <span className="text-[10px] text-emerald-300">Cybersecurity</span>
+                    </li>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
+                      <span className="font-medium text-slate-200">3. Rhea jean C. Tabugon</span>
+                      <span className="text-[10px] text-amber-300">Accessibility</span>
+                    </li>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
+                      <span className="font-medium text-slate-200">4. Angela Timbal</span>
+                      <span className="text-[10px] text-sky-300">Policy Research</span>
+                    </li>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
+                      <span className="font-medium text-slate-200">5. Jeramel L. Quijas</span>
+                      <span className="text-[10px] text-teal-300">Documentation</span>
+                    </li>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
+                      <span className="font-semibold text-white">6. Romnick P. Ramacula</span>
                       <span className="text-[10px] text-pink-300">Lead Presenter</span>
                     </li>
                     <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">2. Timbal, Angela</span>
-                      <span className="text-[10px] text-slate-400">Policy Research</span>
+                      <span className="font-medium text-slate-200">7. Jenelly Ramal</span>
+                      <span className="text-[10px] text-rose-300">Ethics & Society</span>
                     </li>
                     <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">3. Atecibo, Roserie</span>
-                      <span className="text-[10px] text-slate-400">Ethics Analyst</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">4. Sanchez, Jovine</span>
-                      <span className="text-[10px] text-slate-400">Cybersecurity</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">5. Tabogon, Rhea Jane</span>
-                      <span className="text-[10px] text-slate-400">Accessibility</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">6. Salado, Charisse</span>
-                      <span className="text-[10px] text-slate-400">Digital Rights</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">7. Quijano, Jeromel</span>
-                      <span className="text-[10px] text-slate-400">Documentation</span>
+                      <span className="font-medium text-slate-200">8. Rose Marie V. Precioso</span>
+                      <span className="text-[10px] text-blue-300">Technology Analyst</span>
                     </li>
                   </ul>
                 </div>
