@@ -16,6 +16,7 @@ import {
   Sparkles,
   QrCode,
   CheckCircle2,
+  Lock,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getActivitiesByCategory, ActivityItem } from '@/lib/activityData';
@@ -143,7 +144,7 @@ function PresenterQuestionCard({
         </button>
       </div>
 
-      {/* Picture Frame Section (Explicit 260px Height so it NEVER collapses or overlaps) */}
+      {/* Picture Frame Section (Hidden on Presenter Screen until Revealed) */}
       <div
         style={{
           position: 'relative',
@@ -159,33 +160,96 @@ function PresenterQuestionCard({
           boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
         }}
       >
-        <Image
-          src={currentItem.imageSrc}
-          alt={currentItem.title}
-          fill
-          className="object-contain p-3"
-          sizes="(max-width: 768px) 100vw, 600px"
-          priority
-        />
+        {isAnswerRevealed ? (
+          <>
+            <Image
+              src={currentItem.imageSrc}
+              alt={currentItem.title}
+              fill
+              className="object-contain p-3 animate-in fade-in duration-300"
+              sizes="(max-width: 768px) 100vw, 600px"
+              priority
+            />
 
-        {/* Corner Badge (Non-overlapping) */}
-        {!isAnswerRevealed && (
+            {/* Revealed Badge */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                backgroundColor: 'rgba(16, 185, 129, 0.9)',
+                color: '#ffffff',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+              }}
+            >
+              Revealed Picture
+            </div>
+          </>
+        ) : (
           <div
             style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              backgroundColor: 'rgba(0, 0, 0, 0.85)',
-              color: '#ffffff',
-              fontSize: '11px',
-              fontWeight: 600,
-              padding: '4px 10px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              padding: '24px',
+              gap: '12px',
             }}
           >
-            Clue Image
+            <div
+              style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '18px',
+                backgroundColor: 'rgba(236, 72, 153, 0.12)',
+                border: '1px solid rgba(236, 72, 153, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 0 24px rgba(236, 72, 153, 0.2)',
+              }}
+            >
+              <Lock className="w-7 h-7 text-pink-400" />
+            </div>
+            <div>
+              <h4 style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
+                Picture Clue Hidden
+              </h4>
+              <p
+                style={{
+                  fontSize: '13px',
+                  color: '#cbd5e1',
+                  marginTop: '4px',
+                  maxWidth: '360px',
+                  lineHeight: 1.4,
+                }}
+              >
+                Audience can view this clue picture on their phones by scanning the QR code on the left!
+              </p>
+            </div>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                padding: '5px 12px',
+                borderRadius: '9999px',
+                fontSize: '11px',
+                color: '#f472b6',
+                fontWeight: 700,
+              }}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Reveals here when you click &quot;Show Correct Answer&quot;</span>
+            </div>
           </div>
         )}
       </div>
