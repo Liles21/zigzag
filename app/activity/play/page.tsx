@@ -611,7 +611,7 @@ function PlayContent() {
       >
         ICT Policies & Issues Presentation Portfolio • Group 6
         <br />
-        Sabado • Sanchez • Tabugon • Timbal • Quijas • Ramacula • Ramal • Precioso
+        Romacula • Ramal • Timbal • Precioso • Sanchez • Tabugon • Sabado • Quijas
       </footer>
     </div>
   );

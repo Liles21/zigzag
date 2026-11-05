@@ -1304,49 +1304,46 @@ export default function ZigzagBrochure() {
           <div className="mt-4 space-y-3">
             {/* FRONT VIEWS */}
             {!isFlipped && (activePanel === 0 || activePanel === null) && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-pink-950/60 to-rose-950/40 border border-pink-500/30">
-                <h3 className="font-bold text-base text-pink-100">Cover Frontpage: ICT Policies and Issues</h3>
-                <p className="text-xs text-pink-300/80 mt-0.5">Ingoude Company Presentation Portfolio • Group 6</p>
-                <div className="mt-2 text-[11px] text-pink-200/90 leading-relaxed bg-black/25 p-2 rounded-xl border border-pink-500/15">
-                  Replicating the official slide cover featuring the 3D desktop workstation, digital clock 17:15, AI neural avatar, and official presentation banner.
-                </div>
-                <div className="mt-3 pt-2.5 border-t border-pink-500/20">
-                  <div className="text-[11px] font-semibold text-pink-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-950/60 to-slate-950/40 border border-sky-500/30">
+                <h3 className="font-bold text-base text-sky-100">Cover: ICT Policies and Issues</h3>
+                <p className="text-xs text-sky-300/80 mt-0.5">Presentation Portfolio • Group 6</p>
+                <div className="mt-3 pt-2.5 border-t border-sky-500/20">
+                  <div className="text-[11px] font-semibold text-sky-400 uppercase tracking-wider mb-2 flex items-center gap-1">
                     <Users className="w-3 h-3" />
                     Official Group Members
                   </div>
                   <ul className="text-xs space-y-1.5 text-slate-300">
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">1. Charlene Mae G. Sabado</span>
-                      <span className="text-[10px] text-purple-300">Digital Rights</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">1. Romacula, Romnick</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">2. Jocine P. Sanchez</span>
-                      <span className="text-[10px] text-emerald-300">Cybersecurity</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">2. Ramal, Jenelly</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">3. Rhea jean C. Tabugon</span>
-                      <span className="text-[10px] text-amber-300">Accessibility</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">3. Timbal, Angela</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">4. Angela Timbal</span>
-                      <span className="text-[10px] text-sky-300">Policy Research</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">4. Precioso, Rosemarie</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">5. Jeramel L. Quijas</span>
-                      <span className="text-[10px] text-teal-300">Documentation</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">5. Sanchez, Jocine</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-semibold text-white">6. Romnick P. Ramacula</span>
-                      <span className="text-[10px] text-pink-300">Lead Presenter</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">6. Tabugon, Rhea Jane</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">7. Jenelly Ramal</span>
-                      <span className="text-[10px] text-rose-300">Ethics & Society</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">7. Sabado, Charlene</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-pink-500/10">
-                      <span className="font-medium text-slate-200">8. Rose Marie V. Precioso</span>
-                      <span className="text-[10px] text-blue-300">Technology Analyst</span>
+                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
+                      <span className="font-medium text-slate-200">8. Quijas, Jeramel</span>
+                      <span className="text-[10px] text-sky-300">Group 6</span>
                     </li>
                   </ul>
                 </div>
@@ -1355,149 +1352,148 @@ export default function ZigzagBrochure() {
 
             {!isFlipped && activePanel === 1 && (
               <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30">
-                <h3 className="font-bold text-base text-purple-100">What is ICT?</h3>
-                <p className="text-xs text-purple-300 mt-1 leading-relaxed">
-                  Information and Communications Technology (ICT) refers to unified communications and the integration of telecommunications, computers, and software that enable users to access, store, transmit, and manipulate information.
-                </p>
-                <div className="mt-3 pt-2.5 border-t border-purple-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>• <strong>Accelerates Education:</strong> Makes interactive learning faster and engaging.</p>
-                  <p>• <strong>Global Bridge:</strong> Seamless real-time collaboration across borders.</p>
-                  <p>• <strong>Digital Literacy:</strong> Equips youth with essential 21st-century problem solving.</p>
+                <h3 className="font-bold text-base text-purple-100">Definition</h3>
+                <p className="text-xs text-purple-300/80 mt-0.5">Foundational Concepts</p>
+                <div className="mt-3 pt-2.5 border-t border-purple-500/20 text-xs text-slate-300 space-y-2.5">
+                  <div className="p-2 bg-black/30 rounded-lg">
+                    <span className="font-bold text-purple-300">What are ICT Policies?</span>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Official rules, regulations, and guidelines established to govern the safe, legal, and ethical use of Information and Communications Technology.</p>
+                  </div>
+                  <div className="p-2 bg-black/30 rounded-lg">
+                    <span className="font-bold text-rose-300">What are ICT Issues?</span>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Digital risks, harms, and challenges that arise from the misuse, vulnerability, or irresponsible application of digital technologies.</p>
+                  </div>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 2 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-indigo-950/40 border border-blue-500/30">
-                <h3 className="font-bold text-base text-blue-100">ICT Policies Framework</h3>
-                <p className="text-xs text-blue-300/80 mt-0.5">Core Institutional Standards</p>
-                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-300 space-y-2">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
+                <h3 className="font-bold text-base text-teal-100">ICT Policies</h3>
+                <p className="text-xs text-teal-300/80 mt-0.5">The 4 Official Policies from the Paper</p>
+                <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-300 space-y-2">
                   <div>
-                    <span className="font-semibold text-blue-300">1. Data Privacy:</span>
-                    <p className="text-[11px] text-slate-400">Safeguards sensitive personal information of students, staff, and faculty.</p>
+                    <span className="font-semibold text-sky-300">1. Data Privacy:</span>
+                    <p className="text-[11px] text-slate-400">Safeguards personal data, passwords, and records from unauthorized access and collection.</p>
                   </div>
                   <div>
-                    <span className="font-semibold text-cyan-300">2. Cybersecurity:</span>
-                    <p className="text-[11px] text-slate-400">Shields campus networks, accounts, and hardware from unauthorized breaches.</p>
+                    <span className="font-semibold text-teal-300">2. Anti-Cybercrime:</span>
+                    <p className="text-[11px] text-slate-400">Protections and legal penalties against hacking, unauthorized access, fraud, and cyber attacks.</p>
                   </div>
                   <div>
-                    <span className="font-semibold text-amber-300">3. Copyright & IP:</span>
-                    <p className="text-[11px] text-slate-400">Honors intellectual property, original creations, and fair use standards.</p>
+                    <span className="font-semibold text-amber-300">3. Copyright:</span>
+                    <p className="text-[11px] text-slate-400">Protects creative works and intellectual property against digital piracy and unauthorized distribution.</p>
                   </div>
                   <div>
-                    <span className="font-semibold text-emerald-300">4. Digital Accessibility:</span>
-                    <p className="text-[11px] text-slate-400">Guarantees equal technological access and assistive tools for all learners.</p>
+                    <span className="font-semibold text-purple-300">4. Responsible Use of Technology:</span>
+                    <p className="text-[11px] text-slate-400">Promotes ethical digital conduct, respect for guidelines, and constructive use of internet resources.</p>
                   </div>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 3 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-red-950/60 to-rose-950/40 border border-red-500/30">
-                <h3 className="font-bold text-base text-red-100">ICT Critical Issues</h3>
-                <p className="text-xs text-red-300/80 mt-0.5">Challenges in Modern Cyberspace</p>
-                <div className="mt-3 pt-2.5 border-t border-red-500/20 text-xs text-slate-300 space-y-2">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
+                <h3 className="font-bold text-base text-rose-100">ICT Issues</h3>
+                <p className="text-xs text-rose-300/80 mt-0.5">The 4 Official Issues from the Paper</p>
+                <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-300 space-y-2">
                   <div>
-                    <span className="font-semibold text-red-300">1. Cyberbullying:</span>
-                    <p className="text-[11px] text-slate-400">Online harassment, hate speech, and intimidation damaging mental health.</p>
+                    <span className="font-semibold text-rose-300">1. Cyberbullying:</span>
+                    <p className="text-[11px] text-slate-400">Online harassment, insults, intimidation, and abuse using digital communication tools.</p>
                   </div>
                   <div>
-                    <span className="font-semibold text-orange-300">2. Digital Divide:</span>
-                    <p className="text-[11px] text-slate-400">Disparities in device access and broadband connectivity among rural students.</p>
+                    <span className="font-semibold text-orange-300">2. Fake News:</span>
+                    <p className="text-[11px] text-slate-400">Fabricated stories and misinformation spread online to mislead the public or cause panic.</p>
                   </div>
                   <div>
-                    <span className="font-semibold text-amber-300">3. Fake News:</span>
-                    <p className="text-[11px] text-slate-400">Viral misinformation distorting public discourse and factual integrity.</p>
+                    <span className="font-semibold text-amber-300">3. Internet Addiction:</span>
+                    <p className="text-[11px] text-slate-400">Excessive and compulsive screen time harming physical health, personal relationships, and focus.</p>
                   </div>
                   <div>
-                    <span className="font-semibold text-purple-300">4. Internet Addiction:</span>
-                    <p className="text-[11px] text-slate-400">Excessive screen time degrading focus, sleep, and physical well-being.</p>
+                    <span className="font-semibold text-fuchsia-300">4. Privacy Issues:</span>
+                    <p className="text-[11px] text-slate-400">Unauthorized tracking, identity exposure, data harvesting, and leaks of sensitive user information.</p>
                   </div>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 4 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-pink-950/60 to-amber-950/40 border border-pink-500/30">
-                <h3 className="font-bold text-base text-amber-100">Conclusion & Ethics</h3>
-                <p className="text-xs text-amber-300 mt-1 leading-relaxed">
-                  ICT policies are not merely restrictions; they are foundational ethical pillars that safeguard our collective future. Responsible technology usage demands placing human dignity, security, and truth at the core of innovation.
-                </p>
-                <div className="mt-3 pt-2 text-center text-xs font-bold text-pink-300">
-                  Thank you for reviewing our interactive presentation!
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30">
+                <h3 className="font-bold text-base text-blue-100">Summary & Group Credits</h3>
+                <p className="text-xs text-blue-300/80 mt-0.5">ICT Policies & Issues • Group 6</p>
+                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-300 space-y-2">
+                  <div className="p-2 bg-black/30 rounded-lg">
+                    <span className="font-bold text-teal-300">4 Policies:</span>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Data Privacy, Anti-Cybercrime, Copyright, Responsible Use of Technology</p>
+                  </div>
+                  <div className="p-2 bg-black/30 rounded-lg">
+                    <span className="font-bold text-rose-300">4 Issues:</span>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Cyberbullying, Fake News, Internet Addiction, Privacy Issues</p>
+                  </div>
+                  <div className="mt-2 text-center text-[11px] text-sky-300 font-semibold">
+                    Presented by Group 6 • 2026 Academic Year
+                  </div>
                 </div>
               </div>
             )}
 
             {/* BACK SIDE VIEWS */}
             {isFlipped && (activePanel === 0 || activePanel === null) && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-950/60 to-slate-950/40 border border-sky-500/30">
-                <h3 className="font-bold text-base text-sky-100">Legal Frameworks</h3>
-                <p className="text-xs text-sky-300/80 mt-0.5">Key Philippine & International Legislation</p>
-                <div className="mt-3 pt-2.5 border-t border-sky-500/20 text-xs text-slate-300 space-y-2">
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-sky-300">RA 10173 • Data Privacy Act</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Mandates strict consent and confidentiality in handling student and citizen data.</p>
-                  </div>
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-emerald-300">RA 10175 • Cybercrime Prevention</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Criminalizes hacking, identity theft, child pornography, and online libel.</p>
-                  </div>
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-yellow-300">RA 8293 • Intellectual Property</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Defines authors rights, software licensing, and fair use in academic institutions.</p>
-                  </div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30">
+                <h3 className="font-bold text-base text-blue-100">Summary & Group Credits</h3>
+                <p className="text-xs text-blue-300/80 mt-0.5">ICT Policies & Issues • Group 6</p>
+                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-300 space-y-1.5">
+                  <p>• Data Privacy, Anti-Cybercrime, Copyright, Responsible Use of Technology</p>
+                  <p>• Cyberbullying, Fake News, Internet Addiction, Privacy Issues</p>
+                  <p className="text-sky-300 font-bold mt-2">Group 6 Presentation Portfolio</p>
                 </div>
               </div>
             )}
 
             {isFlipped && activePanel === 1 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-950/60 to-slate-950/40 border border-emerald-500/30">
-                <h3 className="font-bold text-base text-emerald-100">Cyber Safety & Student Rules</h3>
-                <p className="text-xs text-emerald-300/80 mt-0.5">Digital Footprint & Account Hygiene</p>
-                <div className="mt-3 pt-2.5 border-t border-emerald-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>• <strong>Two-Factor Authentication:</strong> Never share OTPs or passwords.</p>
-                  <p>• <strong>Phishing Awareness:</strong> Scrutinize email senders and urgent link requests.</p>
-                  <p>• <strong>Digital Reputation:</strong> What is posted online leaves a permanent trace.</p>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
+                <h3 className="font-bold text-base text-rose-100">ICT Issues Review</h3>
+                <p className="text-xs text-rose-300/80 mt-0.5">The 4 Issues from the Paper</p>
+                <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-300 space-y-1.5">
+                  <p>1. <strong>Cyberbullying:</strong> Harassment and intimidation online.</p>
+                  <p>2. <strong>Fake News:</strong> Fabricated disinformation spreading online.</p>
+                  <p>3. <strong>Internet Addiction:</strong> Compulsive and excessive screen time.</p>
+                  <p>4. <strong>Privacy Issues:</strong> Unauthorized tracking and data leaks.</p>
                 </div>
               </div>
             )}
 
             {isFlipped && activePanel === 2 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-950/60 to-slate-950/40 border border-indigo-500/30">
-                <h3 className="font-bold text-base text-indigo-100">Copyright & Fair Use Guidelines</h3>
-                <p className="text-xs text-indigo-300/80 mt-0.5">Academic Compliance Checklist</p>
-                <div className="mt-3 pt-2.5 border-t border-indigo-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>• <strong>Attribution:</strong> Always cite the original author or research source.</p>
-                  <p>• <strong>Non-Commercial Purpose:</strong> Educational fair use applies strictly to classroom study.</p>
-                  <p>• <strong>Open Licenses:</strong> Prioritize Creative Commons (CC-BY) and open-access resources.</p>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
+                <h3 className="font-bold text-base text-teal-100">ICT Policies Review</h3>
+                <p className="text-xs text-teal-300/80 mt-0.5">The 4 Policies from the Paper</p>
+                <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-300 space-y-1.5">
+                  <p>1. <strong>Data Privacy:</strong> Protection of personal confidential data.</p>
+                  <p>2. <strong>Anti-Cybercrime:</strong> Safeguards against hacking and cyber attacks.</p>
+                  <p>3. <strong>Copyright:</strong> Protection of original intellectual creations.</p>
+                  <p>4. <strong>Responsible Use:</strong> Ethical conduct in digital spaces.</p>
                 </div>
               </div>
             )}
 
             {isFlipped && activePanel === 3 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-cyan-950/60 to-slate-950/40 border border-cyan-500/30">
-                <h3 className="font-bold text-base text-cyan-100">Bridging the Digital Divide</h3>
-                <p className="text-xs text-cyan-300/80 mt-0.5">Equity & Inclusion Strategy</p>
-                <div className="mt-3 pt-2.5 border-t border-cyan-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>• <strong>Public Access Centers:</strong> Subsidized computer labs in remote communities.</p>
-                  <p>• <strong>Affordable Broadband:</strong> Universal connectivity initiatives for public schools.</p>
-                  <p>• <strong>Device Grant Programs:</strong> Lending laptops and tablets to underprivileged students.</p>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30">
+                <h3 className="font-bold text-base text-purple-100">Definition Review</h3>
+                <p className="text-xs text-purple-300/80 mt-0.5">Policies vs Issues</p>
+                <div className="mt-3 pt-2.5 border-t border-purple-500/20 text-xs text-slate-300 space-y-1.5">
+                  <p>• <strong>Policies:</strong> The rules that protect digital society.</p>
+                  <p>• <strong>Issues:</strong> The digital problems and harms that policies solve.</p>
                 </div>
               </div>
             )}
 
             {isFlipped && activePanel === 4 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-pink-950/60 to-rose-950/40 border border-pink-500/30">
-                <h3 className="font-bold text-base text-pink-100">Manifesto & Group Credits</h3>
-                <p className="text-xs text-pink-300/80 mt-0.5">Department of Information & Communications Technology</p>
-                <div className="mt-3 pt-2.5 border-t border-pink-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p className="italic text-pink-200">
-                    &quot;We pledge to uphold digital ethics, promote equal technological opportunities, and create a secure online environment for all.&quot;
-                  </p>
-                  <div className="mt-2 text-[11px] text-slate-400">
-                    Group 6 Presentation Portfolio • 2026 Academic Year
-                  </div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-950/60 to-slate-950/40 border border-sky-500/30">
+                <h3 className="font-bold text-base text-sky-100">Cover & Members Review</h3>
+                <p className="text-xs text-sky-300/80 mt-0.5">ICT Policies and Issues • Group 6</p>
+                <div className="mt-3 pt-2.5 border-t border-sky-500/20 text-xs text-slate-300 space-y-1">
+                  <p>Romacula • Ramal • Timbal • Precioso</p>
+                  <p>Sanchez • Tabugon • Sabado • Quijas</p>
                 </div>
               </div>
             )}

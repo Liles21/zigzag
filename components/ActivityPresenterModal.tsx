@@ -829,7 +829,7 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
       setCurrentIndex((prev) => prev - 1);
     } else if (category === 'issues') {
       setCategory('policies');
-      setCurrentIndex(4);
+      setCurrentIndex(3);
     }
   };
 
@@ -1010,7 +1010,7 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
                   fontFamily: 'monospace',
                 }}
               >
-                5 Questions
+                4 Questions
               </span>
             </button>
 
@@ -1047,7 +1047,7 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
                   fontFamily: 'monospace',
                 }}
               >
-                5 Questions
+                4 Questions
               </span>
             </button>
           </div>
