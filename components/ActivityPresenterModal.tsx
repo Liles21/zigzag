@@ -62,20 +62,47 @@ function PresenterQuestionCard({
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' }}>
       {/* Question Header Card */}
-      <div className="bg-neutral-950 border border-neutral-800 p-4 rounded-2xl flex items-center justify-between">
+      <div
+        style={{
+          backgroundColor: '#0c0d13',
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          borderRadius: '16px',
+          padding: '14px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px',
+        }}
+      >
         <div>
           <span
-            className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-              isPolicy
-                ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40'
-                : 'bg-rose-950 text-rose-300 border border-rose-500/40'
-            }`}
+            style={{
+              display: 'inline-block',
+              fontSize: '11px',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              padding: '3px 10px',
+              borderRadius: '9999px',
+              backgroundColor: isPolicy ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.2)',
+              color: isPolicy ? '#6ee7b7' : '#fda4af',
+              border: isPolicy
+                ? '1px solid rgba(16, 185, 129, 0.4)'
+                : '1px solid rgba(244, 63, 94, 0.4)',
+            }}
           >
             {currentItem.categoryTitle} • CHALLENGE {currentItem.questionNumber}
           </span>
-          <h3 className="text-base sm:text-xl font-bold text-white mt-1">
+          <h3
+            style={{
+              fontSize: '18px',
+              fontWeight: 800,
+              color: '#ffffff',
+              marginTop: '4px',
+            }}
+          >
             Guess the {isPolicy ? 'ICT Policy' : 'ICT Issue'}
           </h3>
         </div>
@@ -84,72 +111,179 @@ function PresenterQuestionCard({
         <button
           type="button"
           onClick={handleToggleReveal}
-          style={{ cursor: 'pointer' }}
-          className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 ${
-            isAnswerRevealed
-              ? 'bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-amber-500/40'
-              : 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white shadow-pink-600/30'
-          }`}
+          style={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 16px',
+            borderRadius: '12px',
+            fontSize: '13px',
+            fontWeight: 800,
+            color: '#ffffff',
+            backgroundColor: isAnswerRevealed ? '#2a2d3d' : '#e11d48',
+            border: isAnswerRevealed
+              ? '1px solid rgba(251, 191, 36, 0.4)'
+              : '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: isAnswerRevealed ? 'none' : '0 4px 14px rgba(225, 29, 72, 0.4)',
+            transition: 'all 0.15s ease',
+          }}
         >
           {isAnswerRevealed ? (
             <>
-              <EyeOff className="w-4 h-4" />
-              <span>Hide Answer</span>
+              <EyeOff className="w-4 h-4 text-amber-300" />
+              <span style={{ color: '#fde68a' }}>Hide Answer</span>
             </>
           ) : (
             <>
-              <Eye className="w-4 h-4" />
+              <Eye className="w-4 h-4 text-white" />
               <span>Show Correct Answer</span>
             </>
           )}
         </button>
       </div>
 
-      {/* Picture Preview & Answer Section */}
-      <div className="bg-neutral-950 border border-neutral-800 rounded-2xl overflow-hidden shadow-xl">
-        <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-neutral-950 flex items-center justify-center border-b border-neutral-800 min-h-[180px]">
-          <Image
-            src={currentItem.imageSrc}
-            alt={currentItem.title}
-            fill
-            className="object-contain p-2"
-            sizes="(max-width: 768px) 100vw, 600px"
-            priority
-          />
+      {/* Picture Frame Section (Explicit 260px Height so it NEVER collapses or overlaps) */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '260px',
+          backgroundColor: '#08090e',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
+        }}
+      >
+        <Image
+          src={currentItem.imageSrc}
+          alt={currentItem.title}
+          fill
+          className="object-contain p-3"
+          sizes="(max-width: 768px) 100vw, 600px"
+          priority
+        />
 
-          {!isAnswerRevealed && (
-            <div className="absolute inset-0 bg-neutral-950/40 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
-              <span className="bg-black/85 text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-full border border-white/20 font-medium shadow-md">
-                Clue Image • Hidden Title Until Revealed
-              </span>
-            </div>
-          )}
-        </div>
+        {/* Corner Badge (Non-overlapping) */}
+        {!isAnswerRevealed && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              color: '#ffffff',
+              fontSize: '11px',
+              fontWeight: 600,
+              padding: '4px 10px',
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}
+          >
+            Clue Image
+          </div>
+        )}
+      </div>
 
-        {/* REVEALED ANSWER PANEL */}
+      {/* Answer / Instructions Card */}
+      <div
+        style={{
+          backgroundColor: '#0f1017',
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          borderRadius: '16px',
+          padding: '16px 20px',
+          minHeight: '120px',
+        }}
+      >
         {isAnswerRevealed ? (
-          <div className="p-4 sm:p-5 bg-gradient-to-b from-neutral-900 to-neutral-950 border-t border-neutral-800 animate-in fade-in duration-300">
-            <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                color: '#34d399',
+                fontSize: '12px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                marginBottom: '4px',
+              }}
+            >
               <CheckCircle2 className="w-4 h-4" /> Official Correct Answer
             </div>
-            <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            <h4
+              style={{
+                fontSize: '22px',
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '-0.02em',
+              }}
+            >
               {currentItem.title}
             </h4>
-            <p className="text-xs sm:text-sm text-neutral-300 mt-2 leading-relaxed">
+            <p
+              style={{
+                fontSize: '13px',
+                color: '#e2e8f0',
+                marginTop: '6px',
+                lineHeight: 1.5,
+              }}
+            >
               {currentItem.description}
             </p>
 
-            <div className="mt-4 pt-3 border-t border-neutral-800">
-              <span className="text-[11px] font-semibold text-neutral-400 block mb-2 uppercase tracking-wider">
+            <div
+              style={{
+                marginTop: '12px',
+                paddingTop: '10px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+            >
+              <span
+                style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: '#94a3b8',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '8px',
+                }}
+              >
                 Key Discussion Points for Presenter:
               </span>
-              <ul className="grid grid-cols-1 gap-1.5">
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {currentItem.keyPoints.map((point, i) => (
                   <li
                     key={i}
-                    className="text-xs text-neutral-300 flex items-start gap-2 bg-neutral-900/60 p-2 rounded-lg border border-neutral-800/80"
+                    style={{
+                      fontSize: '12px',
+                      color: '#f1f5f9',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                    }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-1.5 shrink-0" />
+                    <span
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '9999px',
+                        backgroundColor: '#ec4899',
+                        marginTop: '5px',
+                        flexShrink: 0,
+                      }}
+                    />
                     <span>{point}</span>
                   </li>
                 ))}
@@ -157,13 +291,13 @@ function PresenterQuestionCard({
             </div>
           </div>
         ) : (
-          <div className="p-4 sm:p-5 text-center text-neutral-400 text-xs">
-            <p className="text-neutral-300 font-medium text-sm">
+          <div style={{ textAlign: 'center', padding: '10px 0' }}>
+            <p style={{ color: '#ffffff', fontSize: '15px', fontWeight: 700 }}>
               Waiting for audience guesses...
             </p>
-            <p className="mt-1">
+            <p style={{ color: '#cbd5e1', fontSize: '13px', marginTop: '4px' }}>
               Click{' '}
-              <strong className="text-pink-400">&quot;Show Correct Answer&quot;</strong> when
+              <strong style={{ color: '#f43f5e' }}>&quot;Show Correct Answer&quot;</strong> when
               your audience is ready to see the answer and discussion points!
             </p>
           </div>
@@ -171,19 +305,46 @@ function PresenterQuestionCard({
       </div>
 
       {/* Presenter Step Navigation (Previous / Next) */}
-      <div className="flex items-center justify-between gap-3 mt-1">
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px',
+        }}
+      >
         <button
           type="button"
           onClick={handlePrev}
           disabled={currentIndex === 0 && category === 'policies'}
-          style={{ cursor: currentIndex === 0 && category === 'policies' ? 'not-allowed' : 'pointer' }}
-          className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 disabled:opacity-40 disabled:hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-semibold transition-all active:scale-95"
+          style={{
+            cursor: currentIndex === 0 && category === 'policies' ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '10px 18px',
+            borderRadius: '12px',
+            backgroundColor: '#222533',
+            color: '#ffffff',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            fontSize: '13px',
+            fontWeight: 700,
+            opacity: currentIndex === 0 && category === 'policies' ? 0.35 : 1,
+            transition: 'all 0.15s ease',
+          }}
         >
           <ChevronLeft className="w-4 h-4" />
           <span>Previous</span>
         </button>
 
-        <span className="text-xs text-neutral-400 font-mono">
+        <span
+          style={{
+            fontSize: '13px',
+            color: '#cbd5e1',
+            fontFamily: 'monospace',
+            fontWeight: 700,
+          }}
+        >
           {isPolicy ? 'Policies' : 'Issues'} {currentIndex + 1} / {totalQuestions}
         </span>
 
@@ -191,8 +352,24 @@ function PresenterQuestionCard({
           type="button"
           onClick={handleNext}
           disabled={currentIndex === totalQuestions - 1 && category === 'issues'}
-          style={{ cursor: currentIndex === totalQuestions - 1 && category === 'issues' ? 'not-allowed' : 'pointer' }}
-          className="flex items-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 disabled:opacity-40 text-white text-xs sm:text-sm font-bold shadow-lg shadow-pink-600/20 transition-all active:scale-95"
+          style={{
+            cursor:
+              currentIndex === totalQuestions - 1 && category === 'issues'
+                ? 'not-allowed'
+                : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '10px 20px',
+            borderRadius: '12px',
+            background: 'linear-gradient(to right, #db2777, #e11d48)',
+            color: '#ffffff',
+            fontSize: '13px',
+            fontWeight: 800,
+            boxShadow: '0 4px 14px rgba(225, 29, 72, 0.4)',
+            opacity: currentIndex === totalQuestions - 1 && category === 'issues' ? 0.35 : 1,
+            transition: 'all 0.15s ease',
+          }}
         >
           <span>
             {currentIndex === totalQuestions - 1 && category === 'policies'
@@ -316,10 +493,10 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
         style={{
           position: 'relative',
           width: '100%',
-          maxWidth: '1060px',
+          maxWidth: '1080px',
           maxHeight: '94vh',
-          backgroundColor: '#121319',
-          border: '1px solid rgba(255, 255, 255, 0.16)',
+          backgroundColor: '#111218',
+          border: '1px solid rgba(255, 255, 255, 0.18)',
           borderRadius: '24px',
           boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9)',
           display: 'flex',
@@ -337,24 +514,45 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
             justifyContent: 'space-between',
             gap: '12px',
             padding: '14px 20px',
-            backgroundColor: '#0a0a0e',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            backgroundColor: '#090a0f',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
           }}
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-600 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/20">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #db2777, #f43f5e)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(219, 39, 119, 0.4)',
+              }}
+            >
               <QrCode className="w-5 h-5 text-white" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-sm sm:text-base font-bold tracking-tight text-white">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h2 style={{ fontSize: '16px', fontWeight: 800, color: '#ffffff' }}>
                   Interactive Activity: Guess the Picture
                 </h2>
-                <span className="text-[10px] bg-pink-500/20 text-pink-300 font-bold px-2 py-0.5 rounded-full border border-pink-500/30">
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    backgroundColor: 'rgba(236, 72, 153, 0.25)',
+                    color: '#f472b6',
+                    padding: '2px 8px',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(236, 72, 153, 0.4)',
+                  }}
+                >
                   Presenter Screen
                 </span>
               </div>
-              <p className="text-[11px] sm:text-xs text-neutral-400">
+              <p style={{ fontSize: '12px', color: '#cbd5e1', marginTop: '2px' }}>
                 Audience scans the QR code to guess on their phones • You reveal the correct answer
               </p>
             </div>
@@ -364,47 +562,75 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            style={{ cursor: 'pointer' }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white text-xs font-semibold border border-neutral-700 transition-all active:scale-95"
+            style={{
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              borderRadius: '12px',
+              backgroundColor: '#222533',
+              color: '#ffffff',
+              fontSize: '12px',
+              fontWeight: 700,
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+            }}
             aria-label="Close Activity and Return to 3D Brochure"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 text-white" />
             <span>Close / Back to Brochure</span>
           </button>
         </div>
 
-        {/* Category Selector Tabs */}
+        {/* Category Selector Tabs with HIGH CONTRAST & FULL VISIBILITY */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '10px 20px',
-            backgroundColor: '#0d0e14',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            backgroundColor: '#0c0d13',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             flexWrap: 'wrap',
-            gap: '8px',
+            gap: '10px',
           }}
         >
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-neutral-400 mr-1 hidden sm:inline">
-              Category:
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: '#cbd5e1' }}>Category:</span>
 
-            {/* TAB 1: ICT POLICIES (Guessed First) */}
+            {/* TAB 1: ICT POLICIES */}
             <button
               type="button"
               onClick={() => handleCategoryChange('policies')}
-              style={{ cursor: 'pointer' }}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                isPolicy
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-400/50'
-                  : 'bg-neutral-800/80 text-neutral-400 hover:bg-neutral-700 hover:text-white'
-              }`}
+              style={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '12px',
+                fontSize: '13px',
+                fontWeight: isPolicy ? 800 : 700,
+                backgroundColor: isPolicy ? '#059669' : '#1e212b',
+                color: '#ffffff',
+                border: isPolicy
+                  ? '2px solid #34d399'
+                  : '1px solid rgba(255, 255, 255, 0.25)',
+                boxShadow: isPolicy ? '0 4px 14px rgba(16, 185, 129, 0.35)' : 'none',
+              }}
             >
-              <ShieldCheck className="w-4 h-4" />
+              <ShieldCheck className="w-4 h-4 text-white" />
               <span>1. ICT POLICIES</span>
-              <span className="text-[10px] bg-black/30 px-1.5 py-0.5 rounded-md font-mono">
+              <span
+                style={{
+                  fontSize: '11px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                  padding: '2px 6px',
+                  borderRadius: '6px',
+                  color: '#ffffff',
+                  fontFamily: 'monospace',
+                }}
+              >
                 5 Questions
               </span>
             </button>
@@ -413,41 +639,76 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
             <button
               type="button"
               onClick={() => handleCategoryChange('issues')}
-              style={{ cursor: 'pointer' }}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                !isPolicy
-                  ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30 ring-2 ring-rose-400/50'
-                  : 'bg-neutral-800/80 text-neutral-400 hover:bg-neutral-700 hover:text-white'
-              }`}
+              style={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '12px',
+                fontSize: '13px',
+                fontWeight: !isPolicy ? 800 : 700,
+                backgroundColor: !isPolicy ? '#e11d48' : '#1e212b',
+                color: '#ffffff',
+                border: !isPolicy
+                  ? '2px solid #fb7185'
+                  : '1px solid rgba(255, 255, 255, 0.25)',
+                boxShadow: !isPolicy ? '0 4px 14px rgba(225, 29, 72, 0.35)' : 'none',
+              }}
             >
-              <AlertTriangle className="w-4 h-4" />
+              <AlertTriangle className="w-4 h-4 text-white" />
               <span>2. ICT ISSUES</span>
-              <span className="text-[10px] bg-black/30 px-1.5 py-0.5 rounded-md font-mono">
+              <span
+                style={{
+                  fontSize: '11px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                  padding: '2px 6px',
+                  borderRadius: '6px',
+                  color: '#ffffff',
+                  fontFamily: 'monospace',
+                }}
+              >
                 5 Questions
               </span>
             </button>
           </div>
 
-          {/* Quick Question Selector Pills */}
-          <div className="flex items-center gap-1.5">
-            {questions.map((q, idx) => (
-              <button
-                type="button"
-                key={q.id}
-                onClick={() => setCurrentIndex(idx)}
-                style={{ cursor: 'pointer' }}
-                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-bold transition-all ${
-                  currentIndex === idx
-                    ? isPolicy
-                      ? 'bg-emerald-500 text-black font-extrabold ring-2 ring-emerald-400/60'
-                      : 'bg-rose-500 text-white font-extrabold ring-2 ring-rose-400/60'
-                    : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-white'
-                }`}
-                title={`Jump to Question ${idx + 1}`}
-              >
-                {idx + 1}
-              </button>
-            ))}
+          {/* Quick Question Selector Pills [1] [2] [3] [4] [5] with High Visibility */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {questions.map((q, idx) => {
+              const isActive = currentIndex === idx;
+              return (
+                <button
+                  type="button"
+                  key={q.id}
+                  onClick={() => setCurrentIndex(idx)}
+                  style={{
+                    cursor: 'pointer',
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    fontWeight: 800,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: isActive
+                      ? isPolicy
+                        ? '#10b981'
+                        : '#f43f5e'
+                      : '#222533',
+                    color: isActive ? (isPolicy ? '#000000' : '#ffffff') : '#ffffff',
+                    border: isActive
+                      ? '2px solid #ffffff'
+                      : '1px solid rgba(255, 255, 255, 0.25)',
+                    boxShadow: isActive ? '0 0 10px rgba(255, 255, 255, 0.5)' : 'none',
+                  }}
+                  title={`Jump to Question ${idx + 1}`}
+                >
+                  {idx + 1}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -456,7 +717,7 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
           style={{
             flex: 1,
             overflowY: 'auto',
-            padding: '16px 20px',
+            padding: '18px 22px',
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
@@ -464,54 +725,138 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* LEFT: QR Code Scanner Card (lg:col-span-5) */}
-            <div className="lg:col-span-5 flex flex-col items-center bg-neutral-950 border border-neutral-800 p-5 rounded-2xl shadow-xl">
-              <div className="w-full flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+            <div
+              className="lg:col-span-5"
+              style={{
+                backgroundColor: '#0c0d13',
+                border: '1px solid rgba(255, 255, 255, 0.14)',
+                padding: '20px',
+                borderRadius: '16px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+              }}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '12px',
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: '#f472b6',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
                   <Sparkles className="w-3.5 h-3.5 text-pink-400" />
                   Audience Scan Code
                 </span>
-                <span className="text-xs font-mono text-neutral-400 bg-neutral-900 px-2 py-0.5 rounded border border-neutral-800">
+                <span
+                  style={{
+                    fontSize: '12px',
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    backgroundColor: '#1f2230',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                  }}
+                >
                   Question {currentIndex + 1} of {questions.length}
                 </span>
               </div>
 
               {/* QR Code Canvas */}
-              <div className="p-3 bg-white rounded-2xl shadow-2xl flex items-center justify-center border-4 border-neutral-800">
+              <div
+                style={{
+                  padding: '12px',
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
+                  border: '4px solid #222533',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.7)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 {qrDataUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={qrDataUrl}
                     alt={`QR Code for ${currentItem.title}`}
-                    className="w-48 h-48 sm:w-60 sm:h-60 object-contain rounded-lg"
+                    className="w-48 h-48 sm:w-56 sm:h-56 object-contain rounded-lg"
                   />
                 ) : (
-                  <div className="w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center text-black text-xs font-mono">
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center text-black text-xs font-mono">
                     Generating QR...
                   </div>
                 )}
               </div>
 
-              <p className="text-xs text-center text-neutral-300 font-medium mt-3 max-w-xs">
+              <p
+                style={{
+                  fontSize: '13px',
+                  textAlign: 'center',
+                  color: '#e2e8f0',
+                  fontWeight: 600,
+                  marginTop: '14px',
+                  maxWidth: '280px',
+                  lineHeight: 1.4,
+                }}
+              >
                 Audience can scan with phone camera to view the picture and submit their guess!
               </p>
 
               {/* Direct Link Controls */}
-              <div className="w-full mt-4 pt-3 border-t border-neutral-800 flex items-center justify-center">
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '16px',
+                  paddingTop: '12px',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+              >
                 <button
                   type="button"
                   onClick={handleCopyLink}
-                  style={{ cursor: 'pointer' }}
-                  className="w-full flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
+                  style={{
+                    cursor: 'pointer',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    backgroundColor: '#222533',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    padding: '10px 16px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                    transition: 'all 0.15s ease',
+                  }}
                   title="Copy Direct Link"
                 >
                   {copiedLink ? (
                     <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-400 font-semibold">Copied!</span>
+                      <Check className="w-4 h-4 text-emerald-400" />
+                      <span style={{ color: '#34d399' }}>Copied Link!</span>
                     </>
                   ) : (
                     <>
-                      <Copy className="w-3.5 h-3.5" />
+                      <Copy className="w-4 h-4 text-white" />
                       <span>Copy Link</span>
                     </>
                   )}
