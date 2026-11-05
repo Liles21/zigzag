@@ -883,6 +883,27 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
                 Audience can scan with phone camera to view the picture and submit their guess!
               </p>
 
+              {/* URL Preview */}
+              <div
+                style={{
+                  marginTop: '10px',
+                  padding: '6px 12px',
+                  backgroundColor: '#161822',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  maxWidth: '290px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontSize: '11px',
+                  fontFamily: 'monospace',
+                  color: '#94a3b8',
+                }}
+                title={mobilePlayUrl}
+              >
+                {mobilePlayUrl}
+              </div>
+
               {/* Direct Link Controls */}
               <div
                 style={{
