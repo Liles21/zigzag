@@ -11,7 +11,6 @@ import {
   EyeOff,
   Copy,
   Check,
-  ExternalLink,
   ShieldCheck,
   AlertTriangle,
   Sparkles,
@@ -497,12 +496,12 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
               </p>
 
               {/* Direct Link Controls */}
-              <div className="w-full mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between gap-2">
+              <div className="w-full mt-4 pt-3 border-t border-neutral-800 flex items-center justify-center">
                 <button
                   type="button"
                   onClick={handleCopyLink}
                   style={{ cursor: 'pointer' }}
-                  className="flex-1 flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
+                  className="w-full flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
                   title="Copy Direct Link"
                 >
                   {copiedLink ? (
@@ -517,17 +516,6 @@ export const ActivityPresenterModal: React.FC<ActivityPresenterModalProps> = ({
                     </>
                   )}
                 </button>
-
-                <a
-                  href={mobilePlayUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs py-2 px-3 rounded-xl border border-neutral-800 transition-colors"
-                  title="Open mobile audience view in new tab"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Test View</span>
-                </a>
               </div>
             </div>
 
