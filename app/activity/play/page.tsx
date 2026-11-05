@@ -155,7 +155,7 @@ function QuestionCard({ item }: QuestionCardProps) {
           style={{
             position: 'relative',
             width: '100%',
-            height: '210px',
+            height: '190px',
             backgroundColor: '#050608',
             display: 'flex',
             alignItems: 'center',
@@ -561,12 +561,16 @@ function PlayContent() {
     <div
       style={{
         minHeight: '100vh',
+        width: '100%',
         backgroundColor: '#06070a',
         color: '#ffffff',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '14px 16px 120px 16px',
+        padding: '14px 16px 140px 16px',
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        touchAction: 'pan-y',
       }}
     >
       {/* Top Banner */}
