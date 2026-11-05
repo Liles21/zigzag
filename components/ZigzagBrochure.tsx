@@ -6,14 +6,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import {
   createPanel1CoverCanvas,
   createPanel2DefinitionCanvas,
-  createPanel3PoliciesCanvas,
-  createPanel4IssuesCanvas,
-  createPanel5ConclusionCanvas,
+  createPanel3Policies1Canvas,
+  createPanel4Policies2Canvas,
+  createPanel5IssuesHeaderCanvas,
+  createPanel6Issues1Canvas,
+  createPanel7Issues2Canvas,
   createPanel1BackCanvas,
   createPanel2BackCanvas,
   createPanel3BackCanvas,
   createPanel4BackCanvas,
   createPanel5BackCanvas,
+  createPanel6BackCanvas,
+  createPanel7BackCanvas,
 } from '@/lib/brochureTextures';
 import {
   createChalkboardCanvas,
@@ -46,7 +50,7 @@ import {
 import { ActivityPresenterModal } from './ActivityPresenterModal';
 
 export type FoldMode = 'accordion' | 'unfolded' | 'folded';
-export type ActivePanel = 0 | 1 | 2 | 3 | 4 | null;
+export type ActivePanel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | null;
 
 export default function ZigzagBrochure() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -63,19 +67,23 @@ export default function ZigzagBrochure() {
   const [uiCollapsed, setUiCollapsed] = useState<boolean>(false);
   const [activityOpen, setActivityOpen] = useState<boolean>(false);
 
-  // References for Three.js 5-panel kinematics and camera animation
+  // References for Three.js 7-panel kinematics and camera animation
   const animStateRef = useRef({
-    currentAngle1: -1.0,
-    targetAngle1: -1.0,
-    currentAngle2: 2.0,
-    targetAngle2: 2.0,
-    currentAngle3: -2.0,
-    targetAngle3: -2.0,
-    currentAngle4: 2.0,
-    targetAngle4: 2.0,
+    currentAngle1: -0.65,
+    targetAngle1: -0.65,
+    currentAngle2: 1.3,
+    targetAngle2: 1.3,
+    currentAngle3: -1.3,
+    targetAngle3: -1.3,
+    currentAngle4: 1.3,
+    targetAngle4: 1.3,
+    currentAngle5: -1.3,
+    targetAngle5: -1.3,
+    currentAngle6: 1.3,
+    targetAngle6: 1.3,
     currentFlipAngle: 0,
     targetFlipAngle: 0,
-    targetCamPos: new THREE.Vector3(0, 2.4, 5.2),
+    targetCamPos: new THREE.Vector3(0, 2.4, 6.2),
     targetLookAt: new THREE.Vector3(0, 1.25, 0),
     autoRotate: false,
     animatingCamera: true,
@@ -88,13 +96,15 @@ export default function ZigzagBrochure() {
   // Handle fold angles & camera target based on foldMode & activePanel & isFlipped
   const updateTargetAnimation = useCallback(
     (mode: FoldMode, panel: ActivePanel, flipped: boolean) => {
-      let a1 = -1.0;
-      let a2 = 2.0;
-      let a3 = -2.0;
-      let a4 = 2.0;
+      let a1 = -0.65;
+      let a2 = 1.3;
+      let a3 = -1.3;
+      let a4 = 1.3;
+      let a5 = -1.3;
+      let a6 = 1.3;
       let camX = 0;
-      let camY = 2.3;
-      let camZ = 5.2;
+      let camY = 2.4;
+      let camZ = 6.0;
       let lookX = 0;
       let lookY = 1.25;
       const lookZ = 0;
@@ -103,54 +113,62 @@ export default function ZigzagBrochure() {
       animStateRef.current.targetFlipAngle = flipY;
 
       if (mode === 'folded') {
-        // Completely folded 5-panel pocket booklet
+        // Completely folded 7-panel pocket booklet
         a1 = -Math.PI + 0.04;
         a2 = Math.PI - 0.05;
         a3 = -Math.PI + 0.05;
         a4 = Math.PI - 0.05;
+        a5 = -Math.PI + 0.05;
+        a6 = Math.PI - 0.05;
         camX = 0;
         camY = 2.2;
         camZ = 4.6;
         lookY = 1.05;
       } else if (mode === 'unfolded') {
-        // Fully unfolded 5-panel panoramic presentation
-        a1 = 0.04;
-        a2 = 0.04;
-        a3 = 0.04;
-        a4 = 0.04;
-        camX = 0;
-        camY = 2.3;
-        camZ = 6.4;
-        lookY = 1.05;
-      } else {
-        // Classic Standing 5-Panel Zigzag Accordion
-        a1 = -1.0;
-        a2 = 2.0;
-        a3 = -2.0;
-        a4 = 2.0;
+        // Fully unfolded 7-panel panoramic presentation
+        a1 = 0.02;
+        a2 = 0.02;
+        a3 = 0.02;
+        a4 = 0.02;
+        a5 = 0.02;
+        a6 = 0.02;
         camX = 0;
         camY = 2.4;
-        camZ = 5.6;
+        camZ = 7.4;
+        lookY = 1.05;
+      } else {
+        // Classic Standing 7-Panel Zigzag Accordion
+        a1 = -0.65;
+        a2 = 1.3;
+        a3 = -1.3;
+        a4 = 1.3;
+        a5 = -1.3;
+        a6 = 1.3;
+        camX = 0;
+        camY = 2.4;
+        camZ = 6.0;
         lookY = 1.05;
       }
 
       // Camera adjustments for active panel zoom (framed higher to leave room below for zero text covering)
       if (panel !== null) {
         if (mode === 'folded') {
-          a1 = 0.04;
-          a2 = 0.04;
-          a3 = 0.04;
-          a4 = 0.04;
+          a1 = 0.02;
+          a2 = 0.02;
+          a3 = 0.02;
+          a4 = 0.02;
+          a5 = 0.02;
+          a6 = 0.02;
         }
 
         const panelOffsets =
           mode === 'accordion'
-            ? [-1.35, -0.68, 0.0, 0.68, 1.35]
-            : [-2.2, -1.1, 0.0, 1.1, 2.2];
+            ? [-2.1, -1.4, -0.7, 0.0, 0.7, 1.4, 2.1]
+            : [-3.3, -2.2, -1.1, 0.0, 1.1, 2.2, 3.3];
         const focusOffset = panelOffsets[panel] ?? 0;
         camX = flipped ? -focusOffset : focusOffset;
         camY = 1.35;
-        camZ = mode === 'accordion' ? 2.5 : 2.2; // Reading close-up range
+        camZ = mode === 'accordion' ? 2.6 : 2.3; // Reading close-up range
         lookX = flipped ? -focusOffset : focusOffset;
         lookY = 1.15;
       }
@@ -160,6 +178,8 @@ export default function ZigzagBrochure() {
       animStateRef.current.targetAngle2 = a2;
       animStateRef.current.targetAngle3 = a3;
       animStateRef.current.targetAngle4 = a4;
+      animStateRef.current.targetAngle5 = a5;
+      animStateRef.current.targetAngle6 = a6;
       animStateRef.current.targetCamPos.set(camX, camY, camZ);
       animStateRef.current.targetLookAt.set(lookX, lookY, lookZ);
     },
@@ -572,28 +592,32 @@ export default function ZigzagBrochure() {
     classroomGroup.add(mainDesk);
     scene.add(classroomGroup);
 
-    // 6. BUILD THE 5-PANEL ZIGZAG ACCORDION BROCHURE MODEL
-    // Panel Dimensions
-    const panelWidth = 1.35;
+    // 6. BUILD THE 7-PANEL ZIGZAG ACCORDION BROCHURE MODEL
+    // Panel Dimensions (precisely scaled to fit desk)
+    const panelWidth = 1.15;
     const panelHeight = 2.25;
     const panelDepth = 0.012; // Realistic paper cardstock thickness
 
-    // Generate high-resolution CanvasTextures for all 5 panels
+    // Generate high-resolution CanvasTextures for all 7 panels
     const frontTex0 = new THREE.CanvasTexture(createPanel1CoverCanvas());
     const frontTex1 = new THREE.CanvasTexture(createPanel2DefinitionCanvas());
-    const frontTex2 = new THREE.CanvasTexture(createPanel3PoliciesCanvas());
-    const frontTex3 = new THREE.CanvasTexture(createPanel4IssuesCanvas());
-    const frontTex4 = new THREE.CanvasTexture(createPanel5ConclusionCanvas());
+    const frontTex2 = new THREE.CanvasTexture(createPanel3Policies1Canvas());
+    const frontTex3 = new THREE.CanvasTexture(createPanel4Policies2Canvas());
+    const frontTex4 = new THREE.CanvasTexture(createPanel5IssuesHeaderCanvas());
+    const frontTex5 = new THREE.CanvasTexture(createPanel6Issues1Canvas());
+    const frontTex6 = new THREE.CanvasTexture(createPanel7Issues2Canvas());
 
     const backTex0 = new THREE.CanvasTexture(createPanel1BackCanvas());
     const backTex1 = new THREE.CanvasTexture(createPanel2BackCanvas());
     const backTex2 = new THREE.CanvasTexture(createPanel3BackCanvas());
     const backTex3 = new THREE.CanvasTexture(createPanel4BackCanvas());
     const backTex4 = new THREE.CanvasTexture(createPanel5BackCanvas());
+    const backTex5 = new THREE.CanvasTexture(createPanel6BackCanvas());
+    const backTex6 = new THREE.CanvasTexture(createPanel7BackCanvas());
 
     const textures = [
-      frontTex0, frontTex1, frontTex2, frontTex3, frontTex4,
-      backTex0, backTex1, backTex2, backTex3, backTex4,
+      frontTex0, frontTex1, frontTex2, frontTex3, frontTex4, frontTex5, frontTex6,
+      backTex0, backTex1, backTex2, backTex3, backTex4, backTex5, backTex6,
     ];
     textures.forEach((tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -651,7 +675,7 @@ export default function ZigzagBrochure() {
     hinge1.position.set(panelWidth / 2, 0, 0);
     panel0.add(hinge1);
 
-    // Panel 1 (What is ICT?)
+    // Panel 1 (Definition)
     const panel1 = new THREE.Mesh(panelBoxGeo, createPanelMaterials(frontTex1, backTex1));
     panel1.position.set(panelWidth / 2, 0, 0);
     panel1.castShadow = true;
@@ -664,7 +688,7 @@ export default function ZigzagBrochure() {
     hinge2.position.set(panelWidth, 0, 0);
     hinge1.add(hinge2);
 
-    // Panel 2 (ICT Policies)
+    // Panel 2 (ICT Policies: 1. Data Privacy, 2. Anti-Cybercrime)
     const panel2 = new THREE.Mesh(panelBoxGeo, createPanelMaterials(frontTex2, backTex2));
     panel2.position.set(panelWidth / 2, 0, 0);
     panel2.castShadow = true;
@@ -677,7 +701,7 @@ export default function ZigzagBrochure() {
     hinge3.position.set(panelWidth, 0, 0);
     hinge2.add(hinge3);
 
-    // Panel 3 (ICT Issues)
+    // Panel 3 (3. Copyright, 4. Responsible Use of Technology)
     const panel3 = new THREE.Mesh(panelBoxGeo, createPanelMaterials(frontTex3, backTex3));
     panel3.position.set(panelWidth / 2, 0, 0);
     panel3.castShadow = true;
@@ -690,7 +714,7 @@ export default function ZigzagBrochure() {
     hinge4.position.set(panelWidth, 0, 0);
     hinge3.add(hinge4);
 
-    // Panel 4 (Conclusion, Ethics & Thank You)
+    // Panel 4 (ICT Issues)
     const panel4 = new THREE.Mesh(panelBoxGeo, createPanelMaterials(frontTex4, backTex4));
     panel4.position.set(panelWidth / 2, 0, 0);
     panel4.castShadow = true;
@@ -698,12 +722,38 @@ export default function ZigzagBrochure() {
     panel4.userData = { panelIndex: 4 };
     hinge4.add(panel4);
 
+    // Hinge 5 (located at right edge of Panel 4)
+    const hinge5 = new THREE.Group();
+    hinge5.position.set(panelWidth, 0, 0);
+    hinge4.add(hinge5);
+
+    // Panel 5 (1. Cyberbullying, 2. Fake News)
+    const panel5 = new THREE.Mesh(panelBoxGeo, createPanelMaterials(frontTex5, backTex5));
+    panel5.position.set(panelWidth / 2, 0, 0);
+    panel5.castShadow = true;
+    panel5.receiveShadow = true;
+    panel5.userData = { panelIndex: 5 };
+    hinge5.add(panel5);
+
+    // Hinge 6 (located at right edge of Panel 5)
+    const hinge6 = new THREE.Group();
+    hinge6.position.set(panelWidth, 0, 0);
+    hinge5.add(hinge6);
+
+    // Panel 6 (3. Internet Addiction, 4. Privacy Issues)
+    const panel6 = new THREE.Mesh(panelBoxGeo, createPanelMaterials(frontTex6, backTex6));
+    panel6.position.set(panelWidth / 2, 0, 0);
+    panel6.castShadow = true;
+    panel6.receiveShadow = true;
+    panel6.userData = { panelIndex: 6 };
+    hinge6.add(panel6);
+
     scene.add(brochureRoot);
 
     // 7. Raycasting for Click & Hover interactions
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
-    const interactivePanels = [panel0, panel1, panel2, panel3, panel4];
+    const interactivePanels = [panel0, panel1, panel2, panel3, panel4, panel5, panel6];
 
     const onPointerMove = (e: MouseEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -813,7 +863,7 @@ export default function ZigzagBrochure() {
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
 
-      // Smooth kinematic interpolation for 5-panel accordion folding
+      // Smooth kinematic interpolation for 7-panel accordion folding
       const s = animStateRef.current;
       const lerpSpeed = 5.0 * delta;
 
@@ -821,19 +871,25 @@ export default function ZigzagBrochure() {
       s.currentAngle2 = THREE.MathUtils.lerp(s.currentAngle2, s.targetAngle2, lerpSpeed);
       s.currentAngle3 = THREE.MathUtils.lerp(s.currentAngle3, s.targetAngle3, lerpSpeed);
       s.currentAngle4 = THREE.MathUtils.lerp(s.currentAngle4, s.targetAngle4, lerpSpeed);
+      s.currentAngle5 = THREE.MathUtils.lerp(s.currentAngle5, s.targetAngle5, lerpSpeed);
+      s.currentAngle6 = THREE.MathUtils.lerp(s.currentAngle6, s.targetAngle6, lerpSpeed);
       s.currentFlipAngle = THREE.MathUtils.lerp(s.currentFlipAngle, s.targetFlipAngle, lerpSpeed);
 
       hinge1.rotation.y = s.currentAngle1;
       hinge2.rotation.y = s.currentAngle2;
       hinge3.rotation.y = s.currentAngle3;
       hinge4.rotation.y = s.currentAngle4;
+      hinge5.rotation.y = s.currentAngle5;
+      hinge6.rotation.y = s.currentAngle6;
       flipContainer.rotation.y = s.currentFlipAngle;
 
-      // Dynamic Auto-Centering of all 5 panels
+      // Dynamic Auto-Centering of all 7 panels
       const t1 = s.currentAngle1;
       const t2 = s.currentAngle2;
       const t3 = s.currentAngle3;
       const t4 = s.currentAngle4;
+      const t5 = s.currentAngle5;
+      const t6 = s.currentAngle6;
 
       const p0x = 0;
       const p0z = 0;
@@ -850,8 +906,14 @@ export default function ZigzagBrochure() {
       const p4x = panelWidth / 2 + panelWidth * Math.cos(t1) + panelWidth * Math.cos(t1 + t2) + panelWidth * Math.cos(t1 + t2 + t3) + (panelWidth / 2) * Math.cos(t1 + t2 + t3 + t4);
       const p4z = panelWidth * Math.sin(t1) + panelWidth * Math.sin(t1 + t2) + panelWidth * Math.sin(t1 + t2 + t3) + (panelWidth / 2) * Math.sin(t1 + t2 + t3 + t4);
 
-      const avgX = (p0x + p1x + p2x + p3x + p4x) / 5;
-      const avgZ = (p0z + p1z + p2z + p3z + p4z) / 5;
+      const p5x = panelWidth / 2 + panelWidth * Math.cos(t1) + panelWidth * Math.cos(t1 + t2) + panelWidth * Math.cos(t1 + t2 + t3) + panelWidth * Math.cos(t1 + t2 + t3 + t4) + (panelWidth / 2) * Math.cos(t1 + t2 + t3 + t4 + t5);
+      const p5z = panelWidth * Math.sin(t1) + panelWidth * Math.sin(t1 + t2) + panelWidth * Math.sin(t1 + t2 + t3) + panelWidth * Math.sin(t1 + t2 + t3 + t4) + (panelWidth / 2) * Math.sin(t1 + t2 + t3 + t4 + t5);
+
+      const p6x = panelWidth / 2 + panelWidth * Math.cos(t1) + panelWidth * Math.cos(t1 + t2) + panelWidth * Math.cos(t1 + t2 + t3) + panelWidth * Math.cos(t1 + t2 + t3 + t4) + panelWidth * Math.cos(t1 + t2 + t3 + t4 + t5) + (panelWidth / 2) * Math.cos(t1 + t2 + t3 + t4 + t5 + t6);
+      const p6z = panelWidth * Math.sin(t1) + panelWidth * Math.sin(t1 + t2) + panelWidth * Math.sin(t1 + t2 + t3) + panelWidth * Math.sin(t1 + t2 + t3 + t4) + panelWidth * Math.sin(t1 + t2 + t3 + t4 + t5) + (panelWidth / 2) * Math.sin(t1 + t2 + t3 + t4 + t5 + t6);
+
+      const avgX = (p0x + p1x + p2x + p3x + p4x + p5x + p6x) / 7;
+      const avgZ = (p0z + p1z + p2z + p3z + p4z + p5z + p6z) / 7;
 
       // When flipContainer rotates by currentFlipAngle, its centroid (avgX, avgZ) rotates:
       // X_world_offset = avgX * cos(angle) + avgZ * sin(angle)
@@ -992,7 +1054,7 @@ export default function ZigzagBrochure() {
                 ICT Policies & Issues
               </h1>
               <span className="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold bg-pink-500/20 text-pink-300 border border-pink-500/40 rounded-full hidden md:inline">
-                5-Panel 3D Zigzag
+                7-Segment 3D Zigzag
               </span>
             </div>
             <p className="text-[10px] sm:text-xs text-slate-400 hidden sm:block truncate">
@@ -1111,71 +1173,97 @@ export default function ZigzagBrochure() {
           </button>
         ) : (
           <div className="pointer-events-auto bg-black/85 backdrop-blur-xl px-2 sm:px-3 py-1.5 sm:py-2 rounded-2xl border border-pink-500/30 shadow-2xl flex flex-col items-center gap-1.5 w-full">
-            {/* Top Row: 5 Panels Selector with Mobile-Optimized Labels */}
+            {/* Top Row: 7 Panels Selector with Mobile-Optimized Labels */}
             <div className="flex items-center gap-1 overflow-x-auto max-w-full py-0.5 scrollbar-none justify-start sm:justify-center w-full">
               <button
                 onClick={() => handleSelectPanel(0)}
-                className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition whitespace-nowrap flex-shrink-0 ${
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
                   activePanel === 0
                     ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <Users className="w-3.5 h-3.5 text-pink-300 flex-shrink-0" />
-                <span className="hidden sm:inline">{isFlipped ? 'Back 1: Legal Frameworks' : 'Frontpage: Cover'}</span>
-                <span className="sm:hidden">{isFlipped ? '1: Legal' : '1: Cover'}</span>
+                <span className="hidden sm:inline">{isFlipped ? 'Back 1' : 'P1: Cover & Members'}</span>
+                <span className="sm:hidden">P1</span>
               </button>
 
               <button
                 onClick={() => handleSelectPanel(1)}
-                className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition whitespace-nowrap flex-shrink-0 ${
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
                   activePanel === 1
                     ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5 text-purple-300 flex-shrink-0" />
-                <span className="hidden sm:inline">{isFlipped ? 'Back 2: Cyber Safety' : 'Panel 2: Definition'}</span>
-                <span className="sm:hidden">{isFlipped ? '2: Safety' : '2: Def'}</span>
+                <span className="hidden sm:inline">{isFlipped ? 'Back 2' : 'P2: Definition'}</span>
+                <span className="sm:hidden">P2</span>
               </button>
 
               <button
                 onClick={() => handleSelectPanel(2)}
-                className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition whitespace-nowrap flex-shrink-0 ${
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
                   activePanel === 2
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-300 flex-shrink-0" />
-                <span className="hidden sm:inline">{isFlipped ? 'Back 3: Copyright Rules' : 'Panel 3: ICT Policies'}</span>
-                <span className="sm:hidden">{isFlipped ? '3: Rules' : '3: Policies'}</span>
+                <span className="hidden sm:inline">{isFlipped ? 'Back 3' : 'P3: Policies (1-2)'}</span>
+                <span className="sm:hidden">P3</span>
               </button>
 
               <button
                 onClick={() => handleSelectPanel(3)}
-                className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition whitespace-nowrap flex-shrink-0 ${
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
                   activePanel === 3
+                    ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md'
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-300 flex-shrink-0" />
+                <span className="hidden sm:inline">{isFlipped ? 'Back 4' : 'P4: Policies (3-4)'}</span>
+                <span className="sm:hidden">P4</span>
+              </button>
+
+              <button
+                onClick={() => handleSelectPanel(4)}
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
+                  activePanel === 4
+                    ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                    : 'text-slate-300 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
+                <span className="hidden sm:inline">{isFlipped ? 'Back 5' : 'P5: ICT Issues'}</span>
+                <span className="sm:hidden">P5</span>
+              </button>
+
+              <button
+                onClick={() => handleSelectPanel(5)}
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
+                  activePanel === 5
                     ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
                 <AlertTriangle className="w-3.5 h-3.5 text-red-300 flex-shrink-0" />
-                <span className="hidden sm:inline">{isFlipped ? 'Back 4: Digital Divide' : 'Panel 4: ICT Issues'}</span>
-                <span className="sm:hidden">{isFlipped ? '4: Divide' : '4: Issues'}</span>
+                <span className="hidden sm:inline">{isFlipped ? 'Back 6' : 'P6: Issues (1-2)'}</span>
+                <span className="sm:hidden">P6</span>
               </button>
 
               <button
-                onClick={() => handleSelectPanel(4)}
-                className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 transition whitespace-nowrap flex-shrink-0 ${
-                  activePanel === 4
-                    ? 'bg-gradient-to-r from-pink-600 to-amber-600 text-white shadow-md'
+                onClick={() => handleSelectPanel(6)}
+                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1 transition whitespace-nowrap flex-shrink-0 ${
+                  activePanel === 6
+                    ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md'
                     : 'text-slate-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                <Award className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
-                <span className="hidden sm:inline">{isFlipped ? 'Back 5: Manifesto & Credits' : 'Panel 5: Conclusion'}</span>
-                <span className="sm:hidden">{isFlipped ? '5: Credits' : '5: End'}</span>
+                <AlertTriangle className="w-3.5 h-3.5 text-pink-300 flex-shrink-0" />
+                <span className="hidden sm:inline">{isFlipped ? 'Back 7' : 'P7: Issues (3-4)'}</span>
+                <span className="sm:hidden">P7</span>
               </button>
             </div>
 
@@ -1264,28 +1352,24 @@ export default function ZigzagBrochure() {
             <span className="text-xs font-bold uppercase tracking-widest text-pink-400 flex items-center gap-1.5 truncate">
               <ZoomIn className="w-3.5 h-3.5 flex-shrink-0" />
               {isFlipped
-                ? activePanel === 0
-                  ? 'Back 1 • Legal Frameworks'
-                  : activePanel === 1
-                  ? 'Back 2 • Cyber Safety'
-                  : activePanel === 2
-                  ? 'Back 3 • Copyright Rules'
-                  : activePanel === 3
-                  ? 'Back 4 • Digital Divide'
-                  : activePanel === 4
-                  ? 'Back 5 • Manifesto & Credits'
-                  : '5-Panel Back Spread Guide'
+                ? activePanel === null
+                  ? '7-Segment Back Spread'
+                  : `Back Side • Panel ${activePanel + 1}`
                 : activePanel === 0
-                ? 'Frontpage • ICT Policies & Issues'
+                ? 'Panel 1 • ICT Policies & Issues'
                 : activePanel === 1
-                ? 'Panel 2 • What is ICT?'
+                ? 'Panel 2 • Definition'
                 : activePanel === 2
                 ? 'Panel 3 • ICT Policies'
                 : activePanel === 3
-                ? 'Panel 4 • ICT Issues'
+                ? 'Panel 4 • ICT Policies (Cont.)'
                 : activePanel === 4
-                ? 'Panel 5 • Conclusion & Ethics'
-                : '5-Panel Brochure Guide'}
+                ? 'Panel 5 • ICT Issues'
+                : activePanel === 5
+                ? 'Panel 6 • ICT Issues'
+                : activePanel === 6
+                ? 'Panel 7 • ICT Issues (Cont.)'
+                : '7-Segment Brochure Outline'}
             </span>
             <div className="flex items-center gap-2 flex-shrink-0">
               <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 bg-white/10 px-2 py-0.5 rounded-full whitespace-nowrap">
@@ -1305,46 +1389,21 @@ export default function ZigzagBrochure() {
             {/* FRONT VIEWS */}
             {!isFlipped && (activePanel === 0 || activePanel === null) && (
               <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-950/60 to-slate-950/40 border border-sky-500/30">
-                <h3 className="font-bold text-base text-sky-100">Cover: ICT Policies and Issues</h3>
-                <p className="text-xs text-sky-300/80 mt-0.5">Presentation Portfolio • Group 6</p>
+                <h3 className="font-bold text-base text-sky-100 uppercase tracking-wide">ICT POLICIES AND ISSUES</h3>
                 <div className="mt-3 pt-2.5 border-t border-sky-500/20">
                   <div className="text-[11px] font-semibold text-sky-400 uppercase tracking-wider mb-2 flex items-center gap-1">
                     <Users className="w-3 h-3" />
-                    Official Group Members
+                    MEMBERS :
                   </div>
-                  <ul className="text-xs space-y-1.5 text-slate-300">
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">1. Romacula, Romnick</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">2. Ramal, Jenelly</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">3. Timbal, Angela</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">4. Precioso, Rosemarie</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">5. Sanchez, Jocine</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">6. Tabugon, Rhea Jane</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">7. Sabado, Charlene</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
-                    <li className="flex items-center justify-between bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">
-                      <span className="font-medium text-slate-200">8. Quijas, Jeramel</span>
-                      <span className="text-[10px] text-sky-300">Group 6</span>
-                    </li>
+                  <ul className="text-xs space-y-1 text-slate-300">
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Romacula, Romnick</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Ramal, Jenelly</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Timbal, Angela</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Precioso, Rosemarie</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Sanchez, Jocine</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Tabugon, Rhea Jane</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Sabado, Charlene</li>
+                    <li className="bg-black/30 px-2.5 py-1 rounded-lg border border-sky-500/10">Quijas, Jeramel</li>
                   </ul>
                 </div>
               </div>
@@ -1352,115 +1411,64 @@ export default function ZigzagBrochure() {
 
             {!isFlipped && activePanel === 1 && (
               <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30">
-                <h3 className="font-bold text-base text-purple-100">Definition</h3>
-                <p className="text-xs text-purple-300/80 mt-0.5">ICT Policies and Issues</p>
+                <h3 className="font-bold text-base text-purple-100 uppercase tracking-wide">DEFINITION</h3>
+                <p className="text-xs text-purple-300/80 mt-1">Panel 2 • Title</p>
               </div>
             )}
 
             {!isFlipped && activePanel === 2 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
-                <h3 className="font-bold text-base text-teal-100">ICT Policies</h3>
-                <p className="text-xs text-teal-300/80 mt-0.5">Official List from Paper</p>
-                <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-300 space-y-2">
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-sky-300">1. Data Privacy</div>
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-teal-300">2. Anti-Cybercrime</div>
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-amber-300">3. Copyright</div>
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-purple-300">4. Responsible Use of Technology</div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30">
+                <h3 className="font-bold text-base text-blue-100 uppercase tracking-wide">ICT POLICIES</h3>
+                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-200 space-y-2">
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-sky-300">1. DATA PRIVACY</div>
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-sky-300">2. ANTI-CYBERCRIME</div>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 3 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
-                <h3 className="font-bold text-base text-rose-100">ICT Issues</h3>
-                <p className="text-xs text-rose-300/80 mt-0.5">Official List from Paper</p>
-                <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-300 space-y-2">
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-rose-300">1. Cyberbullying</div>
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-orange-300">2. Fake News</div>
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-amber-300">3. Internet Addiction</div>
-                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-fuchsia-300">4. Privacy Issues</div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
+                <h3 className="font-bold text-base text-teal-100 uppercase tracking-wide">ICT POLICIES (CONT.)</h3>
+                <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-200 space-y-2">
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-teal-300">3. COPYRIGHT</div>
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-teal-300">4. RESPONSIBLE USE OF TECHNOLOGY</div>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 4 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30">
-                <h3 className="font-bold text-base text-blue-100">Summary & Group Credits</h3>
-                <p className="text-xs text-blue-300/80 mt-0.5">ICT Policies & Issues • Group 6</p>
-                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-300 space-y-2">
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-teal-300">4 Policies:</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Data Privacy, Anti-Cybercrime, Copyright, Responsible Use of Technology</p>
-                  </div>
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-rose-300">4 Issues:</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Cyberbullying, Fake News, Internet Addiction, Privacy Issues</p>
-                  </div>
-                  <div className="mt-2 text-center text-[11px] text-sky-300 font-semibold">
-                    Presented by Group 6 • 2026 Academic Year
-                  </div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/60 to-slate-950/40 border border-amber-500/30">
+                <h3 className="font-bold text-base text-amber-100 uppercase tracking-wide">ICT ISSUES</h3>
+                <p className="text-xs text-amber-300/80 mt-1">Panel 5 • Title</p>
+              </div>
+            )}
+
+            {!isFlipped && activePanel === 5 && (
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
+                <h3 className="font-bold text-base text-rose-100 uppercase tracking-wide">ICT ISSUES</h3>
+                <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-200 space-y-2">
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-rose-300">1. CYBERBULLYING</div>
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-rose-300">2. FAKE NEWS</div>
+                </div>
+              </div>
+            )}
+
+            {!isFlipped && activePanel === 6 && (
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-pink-950/60 to-slate-950/40 border border-pink-500/30">
+                <h3 className="font-bold text-base text-pink-100 uppercase tracking-wide">ICT ISSUES (CONT.)</h3>
+                <div className="mt-3 pt-2.5 border-t border-pink-500/20 text-xs text-slate-200 space-y-2">
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-pink-300">3. INTERNET ADDICTION</div>
+                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-pink-300">4. PRIVACY ISSUES</div>
                 </div>
               </div>
             )}
 
             {/* BACK SIDE VIEWS */}
-            {isFlipped && (activePanel === 0 || activePanel === null) && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30">
-                <h3 className="font-bold text-base text-blue-100">Summary & Group Credits</h3>
-                <p className="text-xs text-blue-300/80 mt-0.5">ICT Policies & Issues • Group 6</p>
-                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>• Data Privacy, Anti-Cybercrime, Copyright, Responsible Use of Technology</p>
-                  <p>• Cyberbullying, Fake News, Internet Addiction, Privacy Issues</p>
-                  <p className="text-sky-300 font-bold mt-2">Group 6 Presentation Portfolio</p>
-                </div>
-              </div>
-            )}
-
-            {isFlipped && activePanel === 1 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
-                <h3 className="font-bold text-base text-rose-100">ICT Issues Review</h3>
-                <p className="text-xs text-rose-300/80 mt-0.5">The 4 Issues from the Paper</p>
-                <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>1. <strong>Cyberbullying:</strong> Harassment and intimidation online.</p>
-                  <p>2. <strong>Fake News:</strong> Fabricated disinformation spreading online.</p>
-                  <p>3. <strong>Internet Addiction:</strong> Compulsive and excessive screen time.</p>
-                  <p>4. <strong>Privacy Issues:</strong> Unauthorized tracking and data leaks.</p>
-                </div>
-              </div>
-            )}
-
-            {isFlipped && activePanel === 2 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
-                <h3 className="font-bold text-base text-teal-100">ICT Policies Review</h3>
-                <p className="text-xs text-teal-300/80 mt-0.5">The 4 Policies from the Paper</p>
-                <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>1. <strong>Data Privacy:</strong> Protection of personal confidential data.</p>
-                  <p>2. <strong>Anti-Cybercrime:</strong> Safeguards against hacking and cyber attacks.</p>
-                  <p>3. <strong>Copyright:</strong> Protection of original intellectual creations.</p>
-                  <p>4. <strong>Responsible Use:</strong> Ethical conduct in digital spaces.</p>
-                </div>
-              </div>
-            )}
-
-            {isFlipped && activePanel === 3 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30">
-                <h3 className="font-bold text-base text-purple-100">Definition Review</h3>
-                <p className="text-xs text-purple-300/80 mt-0.5">Policies vs Issues</p>
-                <div className="mt-3 pt-2.5 border-t border-purple-500/20 text-xs text-slate-300 space-y-1.5">
-                  <p>• <strong>Policies:</strong> The rules that protect digital society.</p>
-                  <p>• <strong>Issues:</strong> The digital problems and harms that policies solve.</p>
-                </div>
-              </div>
-            )}
-
-            {isFlipped && activePanel === 4 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-950/60 to-slate-950/40 border border-sky-500/30">
-                <h3 className="font-bold text-base text-sky-100">Cover & Members Review</h3>
-                <p className="text-xs text-sky-300/80 mt-0.5">ICT Policies and Issues • Group 6</p>
-                <div className="mt-3 pt-2.5 border-t border-sky-500/20 text-xs text-slate-300 space-y-1">
-                  <p>Romacula • Ramal • Timbal • Precioso</p>
-                  <p>Sanchez • Tabugon • Sabado • Quijas</p>
-                </div>
+            {isFlipped && (
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 text-xs text-slate-300 space-y-2">
+                <h3 className="font-bold text-base text-white">Back Side Spread</h3>
+                <p className="text-slate-400">7-Segment Zigzag Accordion Backing</p>
+                <div className="p-2.5 bg-black/40 rounded-lg">Panel {activePanel !== null ? activePanel + 1 : 'All'} Back Side</div>
               </div>
             )}
           </div>
