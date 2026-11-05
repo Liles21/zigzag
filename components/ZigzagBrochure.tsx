@@ -1353,41 +1353,19 @@ export default function ZigzagBrochure() {
             {!isFlipped && activePanel === 1 && (
               <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30">
                 <h3 className="font-bold text-base text-purple-100">Definition</h3>
-                <p className="text-xs text-purple-300/80 mt-0.5">Foundational Concepts</p>
-                <div className="mt-3 pt-2.5 border-t border-purple-500/20 text-xs text-slate-300 space-y-2.5">
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-purple-300">What are ICT Policies?</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Official rules, regulations, and guidelines established to govern the safe, legal, and ethical use of Information and Communications Technology.</p>
-                  </div>
-                  <div className="p-2 bg-black/30 rounded-lg">
-                    <span className="font-bold text-rose-300">What are ICT Issues?</span>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Digital risks, harms, and challenges that arise from the misuse, vulnerability, or irresponsible application of digital technologies.</p>
-                  </div>
-                </div>
+                <p className="text-xs text-purple-300/80 mt-0.5">ICT Policies and Issues</p>
               </div>
             )}
 
             {!isFlipped && activePanel === 2 && (
               <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
                 <h3 className="font-bold text-base text-teal-100">ICT Policies</h3>
-                <p className="text-xs text-teal-300/80 mt-0.5">The 4 Official Policies from the Paper</p>
+                <p className="text-xs text-teal-300/80 mt-0.5">Official List from Paper</p>
                 <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-300 space-y-2">
-                  <div>
-                    <span className="font-semibold text-sky-300">1. Data Privacy:</span>
-                    <p className="text-[11px] text-slate-400">Safeguards personal data, passwords, and records from unauthorized access and collection.</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-teal-300">2. Anti-Cybercrime:</span>
-                    <p className="text-[11px] text-slate-400">Protections and legal penalties against hacking, unauthorized access, fraud, and cyber attacks.</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-amber-300">3. Copyright:</span>
-                    <p className="text-[11px] text-slate-400">Protects creative works and intellectual property against digital piracy and unauthorized distribution.</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-purple-300">4. Responsible Use of Technology:</span>
-                    <p className="text-[11px] text-slate-400">Promotes ethical digital conduct, respect for guidelines, and constructive use of internet resources.</p>
-                  </div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-sky-300">1. Data Privacy</div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-teal-300">2. Anti-Cybercrime</div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-amber-300">3. Copyright</div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-purple-300">4. Responsible Use of Technology</div>
                 </div>
               </div>
             )}
@@ -1395,24 +1373,12 @@ export default function ZigzagBrochure() {
             {!isFlipped && activePanel === 3 && (
               <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
                 <h3 className="font-bold text-base text-rose-100">ICT Issues</h3>
-                <p className="text-xs text-rose-300/80 mt-0.5">The 4 Official Issues from the Paper</p>
+                <p className="text-xs text-rose-300/80 mt-0.5">Official List from Paper</p>
                 <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-300 space-y-2">
-                  <div>
-                    <span className="font-semibold text-rose-300">1. Cyberbullying:</span>
-                    <p className="text-[11px] text-slate-400">Online harassment, insults, intimidation, and abuse using digital communication tools.</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-orange-300">2. Fake News:</span>
-                    <p className="text-[11px] text-slate-400">Fabricated stories and misinformation spread online to mislead the public or cause panic.</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-amber-300">3. Internet Addiction:</span>
-                    <p className="text-[11px] text-slate-400">Excessive and compulsive screen time harming physical health, personal relationships, and focus.</p>
-                  </div>
-                  <div>
-                    <span className="font-semibold text-fuchsia-300">4. Privacy Issues:</span>
-                    <p className="text-[11px] text-slate-400">Unauthorized tracking, identity exposure, data harvesting, and leaks of sensitive user information.</p>
-                  </div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-rose-300">1. Cyberbullying</div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-orange-300">2. Fake News</div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-amber-300">3. Internet Addiction</div>
+                  <div className="p-2 bg-black/30 rounded-lg font-semibold text-fuchsia-300">4. Privacy Issues</div>
                 </div>
               </div>
             )}
