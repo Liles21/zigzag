@@ -41,7 +41,9 @@ import {
   Eye,
   EyeOff,
   X,
+  QrCode,
 } from 'lucide-react';
+import { ActivityPresenterModal } from './ActivityPresenterModal';
 
 export type FoldMode = 'accordion' | 'unfolded' | 'folded';
 export type ActivePanel = 0 | 1 | 2 | 3 | 4 | null;
@@ -59,6 +61,7 @@ export default function ZigzagBrochure() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [infoOpen, setInfoOpen] = useState<boolean>(false);
   const [uiCollapsed, setUiCollapsed] = useState<boolean>(false);
+  const [activityOpen, setActivityOpen] = useState<boolean>(false);
 
   // References for Three.js 5-panel kinematics and camera animation
   const animStateRef = useRef({
@@ -1051,6 +1054,16 @@ export default function ZigzagBrochure() {
           </button>
 
           <button
+            onClick={() => setActivityOpen(true)}
+            title="Launch Interactive Guessing Game (QR Codes for Audience)"
+            className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-bold rounded-xl flex items-center gap-1.5 bg-gradient-to-r from-pink-600 via-rose-600 to-amber-600 hover:from-pink-500 hover:to-rose-500 text-white shadow-lg shadow-pink-600/30 transition-all active:scale-95"
+          >
+            <QrCode className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white animate-pulse" />
+            <span className="hidden sm:inline">Activity (QR Game)</span>
+            <span className="sm:hidden">Game</span>
+          </button>
+
+          <button
             onClick={() => setInfoOpen((prev) => !prev)}
             title="Toggle Panel Details HUD"
             className={`p-1.5 sm:p-2 rounded-xl transition ${
@@ -1183,6 +1196,15 @@ export default function ZigzagBrochure() {
                   <BookOpen className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-amber-300" />
                   <span className="hidden sm:inline">Unfold (Read All)</span>
                   <span className="sm:hidden">Unfold</span>
+                </button>
+
+                <button
+                  onClick={() => setActivityOpen(true)}
+                  title="Interactive Activity: Guess the Picture with QR Codes"
+                  className="px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-pink-600 to-amber-600 text-white shadow-md ring-1 ring-pink-400/50 hover:from-pink-500 hover:to-amber-500 transition"
+                >
+                  <QrCode className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-white" />
+                  <span>Activity</span>
                 </button>
               </div>
 
@@ -1466,6 +1488,12 @@ export default function ZigzagBrochure() {
           </div>
         </aside>
       )}
+
+      {/* Interactive Activity (QR Code Guessing Game) Modal */}
+      <ActivityPresenterModal
+        isOpen={activityOpen}
+        onClose={() => setActivityOpen(false)}
+      />
     </div>
   );
 }
