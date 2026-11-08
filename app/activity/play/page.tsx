@@ -406,6 +406,34 @@ function QuestionCard({ item }: QuestionCardProps) {
                     </>
                   )}
                 </p>
+
+                {/* Definition Box */}
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px 12px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '10px',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'block',
+                      fontSize: '11px',
+                      fontWeight: 800,
+                      color: isCorrect ? '#6ee7b7' : '#fda4af',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      marginBottom: '3px',
+                    }}
+                  >
+                    Definition:
+                  </span>
+                  <p style={{ fontSize: '12.5px', color: '#f8fafc', margin: 0, lineHeight: 1.45 }}>
+                    {item.description}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

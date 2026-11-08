@@ -1,14 +1,12 @@
 // High-Resolution 7-Panel Dynamic Canvas Texture Generator for Zigzag Accordion Brochure
-// STRICT REQUIREMENT: Exactly follows the 7-segment construct of the hand-drawn paper brochure (NO MEANINGS, NO PARAGRAPHS, NO EMOJIS).
-//
-// Construct on Paper:
+// Comprehensive definition on every panel:
 // Panel 1: ICT POLICIES AND ISSUES (with Members)
-// Panel 2: DEFINITION
-// Panel 3: ICT POLICIES (1. DATA PRIVACY, 2. ANTI-CYBERCRIME)
-// Panel 4: 3. COPYRIGHT, 4. RESPONSIBLE USE OF TECHNOLOGY
-// Panel 5: ICT ISSUES
-// Panel 6: 1. CYBERBULLYING, 2. FAKE NEWS
-// Panel 7: 3. INTERNET ADDICTION, 4. PRIVACY ISSUES
+// Panel 2: DEFINITION (ICT Policies & ICT Issues)
+// Panel 3: ICT POLICIES (1. DATA PRIVACY, 2. ANTI-CYBERCRIME with Definitions & Guidelines)
+// Panel 4: ICT POLICIES (3. COPYRIGHT, 4. RESPONSIBLE USE OF TECHNOLOGY with Definitions & Guidelines)
+// Panel 5: ICT ISSUES (Overview & Detailed Scope)
+// Panel 6: ICT ISSUES (1. CYBERBULLYING, 2. FAKE NEWS with Definitions & Impact)
+// Panel 7: ICT ISSUES (3. INTERNET ADDICTION, 4. PRIVACY ISSUES with Definitions & Impact)
 
 export const OFFICIAL_MEMBERS = [
   'Romacula, Romnick',
@@ -20,6 +18,34 @@ export const OFFICIAL_MEMBERS = [
   'Sabado, Charlene',
   'Quijas, Jeramel',
 ];
+
+// Helper: Wrap text cleanly onto 2D canvas with precise line metrics
+function wrapText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number
+): number {
+  const words = text.split(' ');
+  let line = '';
+  let curY = y;
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && n > 0) {
+      ctx.fillText(line, x, curY);
+      line = words[n] + ' ';
+      curY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, curY);
+  return curY + lineHeight;
+}
 
 // ==========================================
 // FRONT PANELS (PANELS 1 - 7)
@@ -138,7 +164,7 @@ export function createPanel1CoverCanvas(): HTMLCanvasElement {
   return canvas;
 }
 
-// PANEL 2: DEFINITION (ONLY the word DEFINITION)
+// PANEL 2: DEFINITION (ONLY the title DEFINITION - no category definitions)
 export function createPanel2DefinitionCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = 1600;
@@ -226,30 +252,54 @@ export function createPanel3Policies1Canvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Header Box: ICT POLICIES
-  const headerBoxY = cardY + 120;
+  // Header Box
+  const headerBoxY = cardY + 40;
+  const headerBoxH = 190;
   ctx.fillStyle = 'rgba(10, 48, 47, 0.9)';
   ctx.beginPath();
-  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, 280, [28]);
+  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, headerBoxH, [24]);
   ctx.fill();
   ctx.strokeStyle = '#2dd4bf';
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 96px "Georgia", serif';
-  ctx.fillText('ICT POLICIES', 800, headerBoxY + 175);
+  ctx.font = 'bold 80px "Georgia", serif';
+  ctx.fillText('ICT POLICIES', 800, headerBoxY + 110);
 
-  // Items 1 & 2
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('POLICIES 1 & 2 • DEFINITIONS & REGULATORY GUIDELINES', 800, headerBoxY + 158);
+
   const items = [
-    { num: '1', title: 'DATA PRIVACY', color: '#38bdf8' },
-    { num: '2', title: 'ANTI-CYBERCRIME', color: '#2dd4bf' },
+    {
+      num: '1',
+      title: 'DATA PRIVACY',
+      color: '#38bdf8',
+      def: 'Regulates how personal data is collected, stored, and shared, safeguarding confidential records, identities, and passwords from unauthorized disclosure or surveillance.',
+      points: [
+        '• Explicit consent required before collecting personal identifiable information.',
+        '• Protection against unauthorized corporate surveillance and unauthorized sharing.',
+        '• Compliance with the Data Privacy Act and institutional security protocols.',
+      ],
+    },
+    {
+      num: '2',
+      title: 'ANTI-CYBERCRIME',
+      color: '#2dd4bf',
+      def: 'Enforces legal safeguards and technical security measures against illegal system intrusions, malicious hacking, identity theft, malware distribution, and cyber offenses.',
+      points: [
+        '• Strict prohibition against hacking, unauthorized access, and credential cracking.',
+        '• Implementation of multi-factor authentication, firewalls, and active encryption.',
+        '• Legal accountability and criminal penalties for cyber offenses.',
+      ],
+    },
   ];
 
-  const rowStartY = cardY + 540;
-  const rowH = 680;
-  const rowGap = 80;
+  const rowStartY = cardY + 260;
+  const rowH = 970;
+  const rowGap = 50;
 
   items.forEach((item, idx) => {
     const rY = rowStartY + idx * (rowH + rowGap);
@@ -263,24 +313,65 @@ export function createPanel3Policies1Canvas(): HTMLCanvasElement {
     ctx.lineWidth = 3;
     ctx.stroke();
 
+    // Left Stripe
     ctx.fillStyle = item.color;
     ctx.beginPath();
-    ctx.roundRect(cardX + 60, rY, 20, rowH, [28, 0, 0, 28]);
+    ctx.roundRect(cardX + 60, rY, 18, rowH, [28, 0, 0, 28]);
     ctx.fill();
 
+    // Number Badge
     ctx.beginPath();
-    ctx.roundRect(cardX + 130, rY + (rowH - 180) / 2, 180, 180, [28]);
+    ctx.roundRect(cardX + 110, rY + 45, 120, 120, [20]);
     ctx.fill();
 
     ctx.fillStyle = '#041f1e';
-    ctx.font = 'bold 96px "Segoe UI", sans-serif';
+    ctx.font = 'bold 64px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(item.num, cardX + 220, rY + (rowH - 180) / 2 + 125);
+    ctx.fillText(item.num, cardX + 170, rY + 128);
 
+    // Title
     ctx.textAlign = 'left';
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 74px "Georgia", serif';
-    ctx.fillText(item.title, cardX + 360, rY + rowH / 2 + 25);
+    ctx.font = 'bold 64px "Georgia", serif';
+    ctx.fillText(item.title, cardX + 260, rY + 125);
+
+    // Definition Label
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 28px "Segoe UI", sans-serif';
+    ctx.fillText('DEFINITION:', cardX + 110, rY + 210);
+
+    ctx.strokeStyle = item.color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX + 110, rY + 230);
+    ctx.lineTo(cardX + cardW - 110, rY + 230);
+    ctx.stroke();
+
+    // Definition Text
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '38px "Segoe UI", sans-serif';
+    wrapText(ctx, item.def, cardX + 110, rY + 285, cardW - 220, 56);
+
+    // Key Guidelines Sub-Box
+    const subBoxY = rY + 540;
+    const subBoxH = 390;
+    ctx.fillStyle = 'rgba(5, 26, 25, 0.85)';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 110, subBoxY, cardW - 220, subBoxH, [20]);
+    ctx.fill();
+    ctx.strokeStyle = item.color + '35';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 30px "Segoe UI", sans-serif';
+    ctx.fillText('KEY PRINCIPLES & SAFEGUARDS:', cardX + 140, subBoxY + 55);
+
+    item.points.forEach((pt, pIdx) => {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = '32px "Segoe UI", sans-serif';
+      ctx.fillText(pt, cardX + 140, subBoxY + 125 + pIdx * 70);
+    });
   });
 
   return canvas;
@@ -318,15 +409,54 @@ export function createPanel4Policies2Canvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Items 3 & 4
+  // Header Box
+  const headerBoxY = cardY + 40;
+  const headerBoxH = 190;
+  ctx.fillStyle = 'rgba(10, 48, 47, 0.9)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, headerBoxH, [24]);
+  ctx.fill();
+  ctx.strokeStyle = '#2dd4bf';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 80px "Georgia", serif';
+  ctx.fillText('ICT POLICIES', 800, headerBoxY + 110);
+
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('POLICIES 3 & 4 • DEFINITIONS & REGULATORY GUIDELINES', 800, headerBoxY + 158);
+
   const items = [
-    { num: '3', title: 'COPYRIGHT', color: '#facc15' },
-    { num: '4', title: 'RESPONSIBLE USE OF TECHNOLOGY', color: '#c084fc' },
+    {
+      num: '3',
+      title: 'COPYRIGHT',
+      color: '#facc15',
+      def: 'Protects original digital, artistic, and literary creations, granting exclusive rights to creators while requiring proper attribution and prohibiting digital piracy.',
+      points: [
+        '• Always give lawful attribution and citation to original creators and authors.',
+        '• Observe educational Fair Use guidelines when quoting academic materials.',
+        '• Zero tolerance for pirated software, cracked apps, and stolen media.',
+      ],
+    },
+    {
+      num: '4',
+      title: 'RESPONSIBLE USE OF TECH',
+      color: '#c084fc',
+      def: 'Outlines standards for ethical digital citizenship, academic integrity, respect for community guidelines, and constructive use of technology devices and networks.',
+      points: [
+        '• Promote respectful, empathetic, and constructive communication online.',
+        '• Utilize devices and network resources purposefully for education and growth.',
+        '• Avoid digital plagiarism, academic dishonesty, and malicious network abuse.',
+      ],
+    },
   ];
 
-  const rowStartY = cardY + 280;
-  const rowH = 780;
-  const rowGap = 140;
+  const rowStartY = cardY + 260;
+  const rowH = 970;
+  const rowGap = 50;
 
   items.forEach((item, idx) => {
     const rY = rowStartY + idx * (rowH + rowGap);
@@ -340,37 +470,71 @@ export function createPanel4Policies2Canvas(): HTMLCanvasElement {
     ctx.lineWidth = 3;
     ctx.stroke();
 
+    // Left Stripe
     ctx.fillStyle = item.color;
     ctx.beginPath();
-    ctx.roundRect(cardX + 60, rY, 20, rowH, [28, 0, 0, 28]);
+    ctx.roundRect(cardX + 60, rY, 18, rowH, [28, 0, 0, 28]);
     ctx.fill();
 
+    // Number Badge
     ctx.beginPath();
-    ctx.roundRect(cardX + 130, rY + (rowH - 180) / 2, 180, 180, [28]);
+    ctx.roundRect(cardX + 110, rY + 45, 120, 120, [20]);
     ctx.fill();
 
     ctx.fillStyle = '#041f1e';
-    ctx.font = 'bold 96px "Segoe UI", sans-serif';
+    ctx.font = 'bold 64px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(item.num, cardX + 220, rY + (rowH - 180) / 2 + 125);
+    ctx.fillText(item.num, cardX + 170, rY + 128);
 
+    // Title
     ctx.textAlign = 'left';
     ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 58px "Georgia", serif';
+    ctx.fillText(item.title, cardX + 260, rY + 125);
 
-    if (item.title.length > 15) {
-      ctx.font = 'bold 64px "Georgia", serif';
-      ctx.fillText('RESPONSIBLE USE', cardX + 360, rY + rowH / 2 - 25);
-      ctx.fillText('OF TECHNOLOGY', cardX + 360, rY + rowH / 2 + 65);
-    } else {
-      ctx.font = 'bold 74px "Georgia", serif';
-      ctx.fillText(item.title, cardX + 360, rY + rowH / 2 + 25);
-    }
+    // Definition Label
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 28px "Segoe UI", sans-serif';
+    ctx.fillText('DEFINITION:', cardX + 110, rY + 210);
+
+    ctx.strokeStyle = item.color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX + 110, rY + 230);
+    ctx.lineTo(cardX + cardW - 110, rY + 230);
+    ctx.stroke();
+
+    // Definition Text
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '38px "Segoe UI", sans-serif';
+    wrapText(ctx, item.def, cardX + 110, rY + 285, cardW - 220, 56);
+
+    // Key Guidelines Sub-Box
+    const subBoxY = rY + 540;
+    const subBoxH = 390;
+    ctx.fillStyle = 'rgba(5, 26, 25, 0.85)';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 110, subBoxY, cardW - 220, subBoxH, [20]);
+    ctx.fill();
+    ctx.strokeStyle = item.color + '35';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 30px "Segoe UI", sans-serif';
+    ctx.fillText('KEY PRINCIPLES & CITIZENSHIP:', cardX + 140, subBoxY + 55);
+
+    item.points.forEach((pt, pIdx) => {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = '32px "Segoe UI", sans-serif';
+      ctx.fillText(pt, cardX + 140, subBoxY + 125 + pIdx * 70);
+    });
   });
 
   return canvas;
 }
 
-// PANEL 5: ICT ISSUES (ONLY the title ICT ISSUES)
+// PANEL 5: ICT ISSUES (ONLY the title ICT ISSUES - no category definitions)
 export function createPanel5IssuesHeaderCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = 1600;
@@ -458,14 +622,54 @@ export function createPanel6Issues1Canvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
+  // Header Box
+  const headerBoxY = cardY + 40;
+  const headerBoxH = 190;
+  ctx.fillStyle = 'rgba(54, 15, 28, 0.9)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, headerBoxH, [24]);
+  ctx.fill();
+  ctx.strokeStyle = '#f43f5e';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 80px "Georgia", serif';
+  ctx.fillText('ICT ISSUES', 800, headerBoxY + 110);
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('ISSUES 1 & 2 • DEFINITIONS & SOCIAL IMPACT', 800, headerBoxY + 158);
+
   const items = [
-    { num: '1', title: 'CYBERBULLYING', color: '#f43f5e' },
-    { num: '2', title: 'FAKE NEWS', color: '#fb923c' },
+    {
+      num: '1',
+      title: 'CYBERBULLYING',
+      color: '#f43f5e',
+      def: 'The repeated and deliberate use of digital communication, messaging platforms, and social media to harass, threaten, intimidate, or humiliate peers online.',
+      points: [
+        '• Spreading defamatory rumors, fabricated photos, or private texts online.',
+        '• Leads to severe psychological distress, anxiety, and social isolation.',
+        '• Importance of bystander intervention, evidence recording, and reporting.',
+      ],
+    },
+    {
+      num: '2',
+      title: 'FAKE NEWS',
+      color: '#fb923c',
+      def: 'Fabricated, deceptive, or deliberately distorted stories and headlines distributed across digital platforms to mislead the public, manipulate opinions, or cause alarm.',
+      points: [
+        '• Sensational clickbait engineered to exploit emotional confirmation bias.',
+        '• Algorithmic echo chambers causing dangerous falsehoods to spread virally.',
+        '• Critical defense: cross-check authors, publication dates, and primary sources.',
+      ],
+    },
   ];
 
-  const rowStartY = cardY + 280;
-  const rowH = 780;
-  const rowGap = 140;
+  const rowStartY = cardY + 260;
+  const rowH = 970;
+  const rowGap = 50;
 
   items.forEach((item, idx) => {
     const rY = rowStartY + idx * (rowH + rowGap);
@@ -479,24 +683,65 @@ export function createPanel6Issues1Canvas(): HTMLCanvasElement {
     ctx.lineWidth = 3;
     ctx.stroke();
 
+    // Left Stripe
     ctx.fillStyle = item.color;
     ctx.beginPath();
-    ctx.roundRect(cardX + 60, rY, 20, rowH, [28, 0, 0, 28]);
+    ctx.roundRect(cardX + 60, rY, 18, rowH, [28, 0, 0, 28]);
     ctx.fill();
 
+    // Number Badge
     ctx.beginPath();
-    ctx.roundRect(cardX + 130, rY + (rowH - 180) / 2, 180, 180, [28]);
+    ctx.roundRect(cardX + 110, rY + 45, 120, 120, [20]);
     ctx.fill();
 
     ctx.fillStyle = '#220811';
-    ctx.font = 'bold 96px "Segoe UI", sans-serif';
+    ctx.font = 'bold 64px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(item.num, cardX + 220, rY + (rowH - 180) / 2 + 125);
+    ctx.fillText(item.num, cardX + 170, rY + 128);
 
+    // Title
     ctx.textAlign = 'left';
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 74px "Georgia", serif';
-    ctx.fillText(item.title, cardX + 360, rY + rowH / 2 + 25);
+    ctx.font = 'bold 64px "Georgia", serif';
+    ctx.fillText(item.title, cardX + 260, rY + 125);
+
+    // Definition Label
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 28px "Segoe UI", sans-serif';
+    ctx.fillText('DEFINITION:', cardX + 110, rY + 210);
+
+    ctx.strokeStyle = item.color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX + 110, rY + 230);
+    ctx.lineTo(cardX + cardW - 110, rY + 230);
+    ctx.stroke();
+
+    // Definition Text
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '38px "Segoe UI", sans-serif';
+    wrapText(ctx, item.def, cardX + 110, rY + 285, cardW - 220, 56);
+
+    // Key Impacts Sub-Box
+    const subBoxY = rY + 540;
+    const subBoxH = 390;
+    ctx.fillStyle = 'rgba(20, 5, 10, 0.85)';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 110, subBoxY, cardW - 220, subBoxH, [20]);
+    ctx.fill();
+    ctx.strokeStyle = item.color + '35';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 30px "Segoe UI", sans-serif';
+    ctx.fillText('CHARACTERISTICS & SOCIAL IMPACT:', cardX + 140, subBoxY + 55);
+
+    item.points.forEach((pt, pIdx) => {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = '32px "Segoe UI", sans-serif';
+      ctx.fillText(pt, cardX + 140, subBoxY + 125 + pIdx * 70);
+    });
   });
 
   return canvas;
@@ -534,14 +779,54 @@ export function createPanel7Issues2Canvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
+  // Header Box
+  const headerBoxY = cardY + 40;
+  const headerBoxH = 190;
+  ctx.fillStyle = 'rgba(54, 15, 28, 0.9)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, headerBoxY, cardW - 120, headerBoxH, [24]);
+  ctx.fill();
+  ctx.strokeStyle = '#f43f5e';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 80px "Georgia", serif';
+  ctx.fillText('ICT ISSUES', 800, headerBoxY + 110);
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('ISSUES 3 & 4 • DEFINITIONS & SOCIAL IMPACT', 800, headerBoxY + 158);
+
   const items = [
-    { num: '3', title: 'INTERNET ADDICTION', color: '#facc15' },
-    { num: '4', title: 'PRIVACY ISSUES', color: '#e879f9' },
+    {
+      num: '3',
+      title: 'INTERNET ADDICTION',
+      color: '#facc15',
+      def: 'Compulsive, excessive screen time and digital device dependency that damages daily routines, sleep quality, physical health, and academic concentration.',
+      points: [
+        '• Dopamine loops driven by algorithmic infinite-scroll feeds and obsessive gaming.',
+        '• Sedentary lifestyle complications, visual strain, and chronic sleep deprivation.',
+        '• Counter-measures: daily digital timeouts, screen limits, and offline activities.',
+      ],
+    },
+    {
+      num: '4',
+      title: 'PRIVACY ISSUES',
+      color: '#e879f9',
+      def: 'Security vulnerabilities, unauthorized personal data harvesting, surveillance, and identity disclosures that compromise user rights and confidential information.',
+      points: [
+        '• Doxxing, unpermitted data sharing, and confidential conversation leaks.',
+        '• Invasive telemetry, third-party data broker profiling, and identity theft.',
+        '• Critical defense: strong passwords, private browsing, and access permission checks.',
+      ],
+    },
   ];
 
-  const rowStartY = cardY + 280;
-  const rowH = 780;
-  const rowGap = 140;
+  const rowStartY = cardY + 260;
+  const rowH = 970;
+  const rowGap = 50;
 
   items.forEach((item, idx) => {
     const rY = rowStartY + idx * (rowH + rowGap);
@@ -555,31 +840,65 @@ export function createPanel7Issues2Canvas(): HTMLCanvasElement {
     ctx.lineWidth = 3;
     ctx.stroke();
 
+    // Left Stripe
     ctx.fillStyle = item.color;
     ctx.beginPath();
-    ctx.roundRect(cardX + 60, rY, 20, rowH, [28, 0, 0, 28]);
+    ctx.roundRect(cardX + 60, rY, 18, rowH, [28, 0, 0, 28]);
     ctx.fill();
 
+    // Number Badge
     ctx.beginPath();
-    ctx.roundRect(cardX + 130, rY + (rowH - 180) / 2, 180, 180, [28]);
+    ctx.roundRect(cardX + 110, rY + 45, 120, 120, [20]);
     ctx.fill();
 
     ctx.fillStyle = '#220811';
-    ctx.font = 'bold 96px "Segoe UI", sans-serif';
+    ctx.font = 'bold 64px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(item.num, cardX + 220, rY + (rowH - 180) / 2 + 125);
+    ctx.fillText(item.num, cardX + 170, rY + 128);
 
+    // Title
     ctx.textAlign = 'left';
     ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 64px "Georgia", serif';
+    ctx.fillText(item.title, cardX + 260, rY + 125);
 
-    if (item.title.length > 16) {
-      ctx.font = 'bold 64px "Georgia", serif';
-      ctx.fillText('INTERNET', cardX + 360, rY + rowH / 2 - 25);
-      ctx.fillText('ADDICTION', cardX + 360, rY + rowH / 2 + 65);
-    } else {
-      ctx.font = 'bold 74px "Georgia", serif';
-      ctx.fillText(item.title, cardX + 360, rY + rowH / 2 + 25);
-    }
+    // Definition Label
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 28px "Segoe UI", sans-serif';
+    ctx.fillText('DEFINITION:', cardX + 110, rY + 210);
+
+    ctx.strokeStyle = item.color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX + 110, rY + 230);
+    ctx.lineTo(cardX + cardW - 110, rY + 230);
+    ctx.stroke();
+
+    // Definition Text
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '38px "Segoe UI", sans-serif';
+    wrapText(ctx, item.def, cardX + 110, rY + 285, cardW - 220, 56);
+
+    // Key Impacts Sub-Box
+    const subBoxY = rY + 540;
+    const subBoxH = 390;
+    ctx.fillStyle = 'rgba(20, 5, 10, 0.85)';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 110, subBoxY, cardW - 220, subBoxH, [20]);
+    ctx.fill();
+    ctx.strokeStyle = item.color + '35';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 30px "Segoe UI", sans-serif';
+    ctx.fillText('CHARACTERISTICS & SOCIAL IMPACT:', cardX + 140, subBoxY + 55);
+
+    item.points.forEach((pt, pIdx) => {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = '32px "Segoe UI", sans-serif';
+      ctx.fillText(pt, cardX + 140, subBoxY + 125 + pIdx * 70);
+    });
   });
 
   return canvas;

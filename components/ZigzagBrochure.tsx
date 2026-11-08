@@ -1417,21 +1417,55 @@ export default function ZigzagBrochure() {
             )}
 
             {!isFlipped && activePanel === 2 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30">
-                <h3 className="font-bold text-base text-blue-100 uppercase tracking-wide">ICT POLICIES</h3>
-                <div className="mt-3 pt-2.5 border-t border-blue-500/20 text-xs text-slate-200 space-y-2">
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-sky-300">1. DATA PRIVACY</div>
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-sky-300">2. ANTI-CYBERCRIME</div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-950/60 to-slate-950/40 border border-blue-500/30 space-y-3">
+                <div>
+                  <h3 className="font-bold text-base text-blue-100 uppercase tracking-wide">ICT POLICIES (PART 1)</h3>
+                  <p className="text-xs text-sky-300/80 mt-0.5">Policies 1 & 2 • Definitions & Safeguards</p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-sky-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-sky-300 block text-sm">1. DATA PRIVACY</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Regulates how personal data is collected, stored, and shared, safeguarding confidential records, identities, and passwords from unauthorized disclosure or surveillance.
+                  </p>
+                  <p className="text-[11px] text-sky-200/80">
+                    • Requires explicit user consent before gathering identifiable data and mandates strict data protection compliance.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-teal-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-teal-300 block text-sm">2. ANTI-CYBERCRIME</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Enforces legal safeguards and technical security measures against illegal system intrusions, malicious hacking, identity theft, malware distribution, and cyber offenses.
+                  </p>
+                  <p className="text-[11px] text-teal-200/80">
+                    • Implements defensive authentication, firewalls, and criminal accountability for cyber intrusions.
+                  </p>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 3 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30">
-                <h3 className="font-bold text-base text-teal-100 uppercase tracking-wide">ICT POLICIES (CONT.)</h3>
-                <div className="mt-3 pt-2.5 border-t border-teal-500/20 text-xs text-slate-200 space-y-2">
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-teal-300">3. COPYRIGHT</div>
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-teal-300">4. RESPONSIBLE USE OF TECHNOLOGY</div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-950/60 to-slate-950/40 border border-teal-500/30 space-y-3">
+                <div>
+                  <h3 className="font-bold text-base text-teal-100 uppercase tracking-wide">ICT POLICIES (PART 2)</h3>
+                  <p className="text-xs text-teal-300/80 mt-0.5">Policies 3 & 4 • Definitions & Guidelines</p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-amber-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-amber-300 block text-sm">3. COPYRIGHT</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Protects original digital, artistic, and literary creations, granting exclusive rights to creators while requiring proper attribution and prohibiting digital piracy.
+                  </p>
+                  <p className="text-[11px] text-amber-200/80">
+                    • Mandates citations for academic sources and upholds educational Fair Use boundaries.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-purple-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-purple-300 block text-sm">4. RESPONSIBLE USE OF TECHNOLOGY</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Outlines standards for ethical digital citizenship, academic integrity, respect for community guidelines, and constructive use of technology devices and networks.
+                  </p>
+                  <p className="text-[11px] text-purple-200/80">
+                    • Promotes empathy, constructive online behavior, and zero tolerance for digital cheating or abuse.
+                  </p>
                 </div>
               </div>
             )}
@@ -1444,21 +1478,55 @@ export default function ZigzagBrochure() {
             )}
 
             {!isFlipped && activePanel === 5 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30">
-                <h3 className="font-bold text-base text-rose-100 uppercase tracking-wide">ICT ISSUES</h3>
-                <div className="mt-3 pt-2.5 border-t border-rose-500/20 text-xs text-slate-200 space-y-2">
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-rose-300">1. CYBERBULLYING</div>
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-rose-300">2. FAKE NEWS</div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-950/60 to-slate-950/40 border border-rose-500/30 space-y-3">
+                <div>
+                  <h3 className="font-bold text-base text-rose-100 uppercase tracking-wide">ICT ISSUES (PART 1)</h3>
+                  <p className="text-xs text-rose-300/80 mt-0.5">Issues 1 & 2 • Definitions & Social Harms</p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-rose-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-rose-300 block text-sm">1. CYBERBULLYING</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> The repeated and deliberate use of digital communication, messaging platforms, and social media to harass, threaten, intimidate, or humiliate peers online.
+                  </p>
+                  <p className="text-[11px] text-rose-200/80">
+                    • Causes severe emotional trauma and depression; requires reporting and empathy.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-orange-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-orange-300 block text-sm">2. FAKE NEWS</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Fabricated, deceptive, or intentionally distorted stories and headlines distributed across digital platforms to mislead the public, manipulate opinions, or cause alarm.
+                  </p>
+                  <p className="text-[11px] text-orange-200/80">
+                    • Viral sensationalism spreading confusion; countered by rigorous fact-checking.
+                  </p>
                 </div>
               </div>
             )}
 
             {!isFlipped && activePanel === 6 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-pink-950/60 to-slate-950/40 border border-pink-500/30">
-                <h3 className="font-bold text-base text-pink-100 uppercase tracking-wide">ICT ISSUES (CONT.)</h3>
-                <div className="mt-3 pt-2.5 border-t border-pink-500/20 text-xs text-slate-200 space-y-2">
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-pink-300">3. INTERNET ADDICTION</div>
-                  <div className="p-2.5 bg-black/40 rounded-lg font-bold text-pink-300">4. PRIVACY ISSUES</div>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-pink-950/60 to-slate-950/40 border border-pink-500/30 space-y-3">
+                <div>
+                  <h3 className="font-bold text-base text-pink-100 uppercase tracking-wide">ICT ISSUES (PART 2)</h3>
+                  <p className="text-xs text-pink-300/80 mt-0.5">Issues 3 & 4 • Definitions & Social Harms</p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-amber-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-amber-300 block text-sm">3. INTERNET ADDICTION</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Compulsive, excessive screen time and digital device dependency that damages daily routines, sleep quality, physical health, and academic concentration.
+                  </p>
+                  <p className="text-[11px] text-amber-200/80">
+                    • Addictive feedback loops leading to sleep deficit and real-world disconnection.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-pink-500/30 text-xs space-y-1.5">
+                  <span className="font-bold text-pink-300 block text-sm">4. PRIVACY ISSUES</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    <strong>Definition:</strong> Security vulnerabilities, unauthorized personal data harvesting, surveillance, and identity disclosures that compromise user rights and confidential information.
+                  </p>
+                  <p className="text-[11px] text-pink-200/80">
+                    • Involves doxxing, identity theft, and corporate data broker harvesting without user consent.
+                  </p>
                 </div>
               </div>
             )}

@@ -591,16 +591,44 @@ function PresenterQuestionCard({
             >
               {currentItem.title}
             </h4>
-            <p
+
+            {/* Official Definition Box */}
+            <div
               style={{
-                fontSize: '13px',
-                color: '#e2e8f0',
-                marginTop: '6px',
-                lineHeight: 1.5,
+                marginTop: '10px',
+                padding: '12px 16px',
+                backgroundColor: 'rgba(56, 189, 248, 0.08)',
+                border: '1px solid rgba(56, 189, 248, 0.3)',
+                borderRadius: '12px',
               }}
             >
-              {currentItem.description}
-            </p>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#38bdf8',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '4px',
+                }}
+              >
+                Official Definition
+              </span>
+              <p
+                style={{
+                  fontSize: '13.5px',
+                  color: '#f8fafc',
+                  lineHeight: 1.55,
+                  margin: 0,
+                  fontWeight: 500,
+                }}
+              >
+                {currentItem.description}
+              </p>
+            </div>
 
             <div
               style={{
