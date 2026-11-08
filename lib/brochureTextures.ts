@@ -164,7 +164,7 @@ export function createPanel1CoverCanvas(): HTMLCanvasElement {
   return canvas;
 }
 
-// PANEL 2: DEFINITION (ONLY the title DEFINITION - no category definitions)
+// PANEL 2: DEFINITION (Definitions of ICT Policies & ICT Issues)
 export function createPanel2DefinitionCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = 1600;
@@ -196,26 +196,185 @@ export function createPanel2DefinitionCanvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  const boxY = cardY + 580;
-  const boxH = 1100;
-  ctx.fillStyle = 'rgba(30, 17, 69, 0.9)';
+  // Top Header Box
+  const titleBoxY = cardY + 50;
+  const titleBoxH = 180;
+  ctx.fillStyle = 'rgba(30, 17, 69, 0.85)';
   ctx.beginPath();
-  ctx.roundRect(cardX + 80, boxY, cardW - 160, boxH, [40]);
+  ctx.roundRect(cardX + 60, titleBoxY, cardW - 120, titleBoxH, [24]);
   ctx.fill();
   ctx.strokeStyle = '#c084fc';
-  ctx.lineWidth = 4;
-  ctx.stroke();
-
-  ctx.strokeStyle = 'rgba(168, 85, 247, 0.35)';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.roundRect(cardX + 110, boxY + 30, cardW - 220, boxH - 60, [30]);
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 120px "Georgia", serif';
-  ctx.fillText('DEFINITION', 800, boxY + 580);
+  ctx.font = 'bold 84px "Georgia", serif';
+  ctx.fillText('DEFINITION', 800, titleBoxY + 105);
+
+  ctx.fillStyle = '#c084fc';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('CORE FOUNDATIONS OF ICT GOVERNANCE AND CHALLENGES', 800, titleBoxY + 152);
+
+  // 1. Definition Card: ICT POLICIES
+  const card1Y = cardY + 260;
+  const card1H = 950;
+  ctx.fillStyle = 'rgba(30, 17, 69, 0.9)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, card1Y, cardW - 120, card1H, [28]);
+  ctx.fill();
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Left stripe
+  ctx.fillStyle = '#38bdf8';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, card1Y, 18, card1H, [28, 0, 0, 28]);
+  ctx.fill();
+
+  // Pill
+  ctx.fillStyle = '#0284c7';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 110, card1Y + 45, 260, 48, [14]);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 24px "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('CORE CONCEPT 1', cardX + 240, card1Y + 78);
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 64px "Georgia", serif';
+  ctx.fillText('ICT Policies', cardX + 110, card1Y + 155);
+
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = 'bold 28px "Segoe UI", sans-serif';
+  ctx.fillText('DEFINITION & SCOPE', cardX + 110, card1Y + 205);
+
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cardX + 110, card1Y + 225);
+  ctx.lineTo(cardX + cardW - 110, card1Y + 225);
+  ctx.stroke();
+
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '38px "Segoe UI", sans-serif';
+  wrapText(
+    ctx,
+    'ICT Policies are official rules, legal regulations, institutional principles, and standardized guidelines established to govern, protect, and direct the proper, safe, and ethical use of Information and Communications Technology.',
+    cardX + 110,
+    card1Y + 285,
+    cardW - 220,
+    56
+  );
+
+  // Purpose Sub-Box
+  const subBox1Y = card1Y + 540;
+  const subBox1H = 370;
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 110, subBox1Y, cardW - 220, subBox1H, [20]);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('PRIMARY PURPOSE & MANDATE:', cardX + 140, subBox1Y + 55);
+
+  const polBullets = [
+    '• Establishes legal accountability, digital security, and user protection standards.',
+    '• Safeguards personal records, educational databases, and critical networks.',
+    '• Fosters positive digital citizenship and constructive technological utilization.',
+  ];
+  polBullets.forEach((bullet, bIdx) => {
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '32px "Segoe UI", sans-serif';
+    ctx.fillText(bullet, cardX + 140, subBox1Y + 120 + bIdx * 65);
+  });
+
+  // 2. Definition Card: ICT ISSUES
+  const card2Y = cardY + 1240;
+  const card2H = 950;
+  ctx.fillStyle = 'rgba(30, 17, 69, 0.9)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, card2Y, cardW - 120, card2H, [28]);
+  ctx.fill();
+  ctx.strokeStyle = '#f43f5e';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Left stripe
+  ctx.fillStyle = '#f43f5e';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, card2Y, 18, card2H, [28, 0, 0, 28]);
+  ctx.fill();
+
+  // Pill
+  ctx.fillStyle = '#e11d48';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 110, card2Y + 45, 260, 48, [14]);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 24px "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('CORE CONCEPT 2', cardX + 240, card2Y + 78);
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 64px "Georgia", serif';
+  ctx.fillText('ICT Issues', cardX + 110, card2Y + 155);
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 28px "Segoe UI", sans-serif';
+  ctx.fillText('DEFINITION & SCOPE', cardX + 110, card2Y + 205);
+
+  ctx.strokeStyle = 'rgba(244, 63, 94, 0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cardX + 110, card2Y + 225);
+  ctx.lineTo(cardX + cardW - 110, card2Y + 225);
+  ctx.stroke();
+
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '38px "Segoe UI", sans-serif';
+  wrapText(
+    ctx,
+    'ICT Issues refer to digital risks, ethical conflicts, harms, and social challenges that arise from the misuse, vulnerability, lack of regulation, or irresponsible application of computer systems, networks, and online platforms.',
+    cardX + 110,
+    card2Y + 285,
+    cardW - 220,
+    56
+  );
+
+  // Impact Sub-Box
+  const subBox2Y = card2Y + 540;
+  const subBox2H = 370;
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 110, subBox2Y, cardW - 220, subBox2H, [20]);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('KEY CONSEQUENCES & IMPACT:', cardX + 140, subBox2Y + 55);
+
+  const issBullets = [
+    '• Violates personal privacy through data surveillance and identity leakage.',
+    '• Provokes emotional distress, bullying, and viral dissemination of fake news.',
+    '• Triggers compulsive behavioral addictions and harms mental and physical health.',
+  ];
+  issBullets.forEach((bullet, bIdx) => {
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '32px "Segoe UI", sans-serif';
+    ctx.fillText(bullet, cardX + 140, subBox2Y + 120 + bIdx * 65);
+  });
 
   return canvas;
 }
@@ -534,7 +693,7 @@ export function createPanel4Policies2Canvas(): HTMLCanvasElement {
   return canvas;
 }
 
-// PANEL 5: ICT ISSUES (ONLY the title ICT ISSUES - no category definitions)
+// PANEL 5: ICT ISSUES (Detailed Overview & Definition)
 export function createPanel5IssuesHeaderCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = 1600;
@@ -566,26 +725,150 @@ export function createPanel5IssuesHeaderCanvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  const boxY = cardY + 580;
-  const boxH = 1100;
+  // Top Header Box
+  const titleBoxY = cardY + 50;
+  const titleBoxH = 210;
   ctx.fillStyle = 'rgba(54, 15, 28, 0.9)';
   ctx.beginPath();
-  ctx.roundRect(cardX + 80, boxY, cardW - 160, boxH, [40]);
+  ctx.roundRect(cardX + 60, titleBoxY, cardW - 120, titleBoxH, [24]);
   ctx.fill();
   ctx.strokeStyle = '#f43f5e';
-  ctx.lineWidth = 4;
-  ctx.stroke();
-
-  ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.roundRect(cardX + 110, boxY + 30, cardW - 220, boxH - 60, [30]);
+  ctx.lineWidth = 3.5;
   ctx.stroke();
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 120px "Georgia", serif';
-  ctx.fillText('ICT ISSUES', 800, boxY + 580);
+  ctx.font = 'bold 94px "Georgia", serif';
+  ctx.fillText('ICT ISSUES', 800, titleBoxY + 120);
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('CRITICAL CHALLENGES & ETHICAL HARMS IN THE DIGITAL ERA', 800, titleBoxY + 172);
+
+  // Main Card
+  const boxY = cardY + 300;
+  const boxH = 1890;
+  ctx.fillStyle = 'rgba(54, 15, 28, 0.85)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, boxY, cardW - 120, boxH, [28]);
+  ctx.fill();
+  ctx.strokeStyle = '#f43f5e';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Left accent stripe
+  ctx.fillStyle = '#f43f5e';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 60, boxY, 18, boxH, [28, 0, 0, 28]);
+  ctx.fill();
+
+  // Subheading
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 54px "Georgia", serif';
+  ctx.fillText('Definition of ICT Issues', cardX + 110, boxY + 95);
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 28px "Segoe UI", sans-serif';
+  ctx.fillText('DEFINITION & SCOPE', cardX + 110, boxY + 150);
+
+  ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cardX + 110, boxY + 175);
+  ctx.lineTo(cardX + cardW - 110, boxY + 175);
+  ctx.stroke();
+
+  ctx.fillStyle = '#f1f5f9';
+  ctx.font = '38px "Segoe UI", sans-serif';
+  wrapText(
+    ctx,
+    'ICT Issues refer to digital risks, ethical conflicts, harms, and social challenges that arise from the misuse, vulnerability, lack of regulation, or irresponsible application of computer systems, networks, and online platforms.',
+    cardX + 110,
+    boxY + 240,
+    cardW - 220,
+    58
+  );
+
+  // 4 Core Issues Summary Box
+  const sumBoxY = boxY + 490;
+  const sumBoxH = 880;
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 110, sumBoxY, cardW - 220, sumBoxH, [22]);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 32px "Segoe UI", sans-serif';
+  ctx.fillText('THE 4 CORE ISSUES IN THIS PORTFOLIO:', cardX + 140, sumBoxY + 65);
+
+  const issueSummaries = [
+    {
+      num: '1',
+      title: 'CYBERBULLYING',
+      desc: 'Repeated harassment, humiliation, and intimidation via digital channels and social apps.',
+    },
+    {
+      num: '2',
+      title: 'FAKE NEWS',
+      desc: 'Fabricated disinformation spreading viral deception and eroding public trust.',
+    },
+    {
+      num: '3',
+      title: 'INTERNET ADDICTION',
+      desc: 'Compulsive screen dependency disrupting sleep schedules, health, and academic focus.',
+    },
+    {
+      num: '4',
+      title: 'PRIVACY ISSUES',
+      desc: 'Unauthorized harvesting, tracking, and leak of confidential personal information.',
+    },
+  ];
+
+  issueSummaries.forEach((item, idx) => {
+    const itemY = sumBoxY + 120 + idx * 180;
+    ctx.fillStyle = 'rgba(54, 15, 28, 0.7)';
+    ctx.beginPath();
+    ctx.roundRect(cardX + 140, itemY, cardW - 280, 150, [16]);
+    ctx.fill();
+
+    ctx.fillStyle = '#f43f5e';
+    ctx.font = 'bold 36px "Segoe UI", sans-serif';
+    ctx.fillText(`${item.num}. ${item.title}`, cardX + 170, itemY + 50);
+
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '30px "Segoe UI", sans-serif';
+    wrapText(ctx, item.desc, cardX + 170, itemY + 98, cardW - 340, 42);
+  });
+
+  // Bottom Takeaway Box
+  const whyBoxY = boxY + 1410;
+  const whyBoxH = 430;
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+  ctx.beginPath();
+  ctx.roundRect(cardX + 110, whyBoxY, cardW - 220, whyBoxH, [20]);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#f43f5e';
+  ctx.font = 'bold 30px "Segoe UI", sans-serif';
+  ctx.fillText('WHY UNDERSTANDING DIGITAL ISSUES MATTERS:', cardX + 140, whyBoxY + 60);
+
+  const whyPoints = [
+    '• Recognizing these problems empowers students and educators to identify harms early.',
+    '• Highlights the critical necessity of adhering to strict ICT Policies in school and society.',
+    '• Protects emotional health, cyber safety, and digital integrity for all users.',
+  ];
+  whyPoints.forEach((wpt, wIdx) => {
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = '31px "Segoe UI", sans-serif';
+    ctx.fillText(wpt, cardX + 140, whyBoxY + 135 + wIdx * 85);
+  });
 
   return canvas;
 }

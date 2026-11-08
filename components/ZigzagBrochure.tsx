@@ -1410,9 +1410,23 @@ export default function ZigzagBrochure() {
             )}
 
             {!isFlipped && activePanel === 1 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30">
-                <h3 className="font-bold text-base text-purple-100 uppercase tracking-wide">DEFINITION</h3>
-                <p className="text-xs text-purple-300/80 mt-1">Panel 2 • Title</p>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/60 to-indigo-950/40 border border-purple-500/30 space-y-3">
+                <div>
+                  <h3 className="font-bold text-base text-purple-100 uppercase tracking-wide">DEFINITION</h3>
+                  <p className="text-xs text-purple-300/80 mt-0.5">Foundations of ICT Governance & Digital Risks</p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-sky-500/30 text-xs space-y-1">
+                  <span className="font-bold text-sky-300 block">ICT Policies:</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    Official rules, legal regulations, institutional principles, and standardized guidelines established to govern, protect, and direct the proper, safe, and ethical use of Information and Communications Technology.
+                  </p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-rose-500/30 text-xs space-y-1">
+                  <span className="font-bold text-rose-300 block">ICT Issues:</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    Digital risks, ethical conflicts, harms, and social challenges that arise from the misuse, vulnerability, lack of regulation, or irresponsible application of computer systems, networks, and online platforms.
+                  </p>
+                </div>
               </div>
             )}
 
@@ -1471,9 +1485,24 @@ export default function ZigzagBrochure() {
             )}
 
             {!isFlipped && activePanel === 4 && (
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/60 to-slate-950/40 border border-amber-500/30">
-                <h3 className="font-bold text-base text-amber-100 uppercase tracking-wide">ICT ISSUES</h3>
-                <p className="text-xs text-amber-300/80 mt-1">Panel 5 • Title</p>
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/60 to-slate-950/40 border border-amber-500/30 space-y-2.5">
+                <div>
+                  <h3 className="font-bold text-base text-amber-100 uppercase tracking-wide">ICT ISSUES</h3>
+                  <p className="text-xs text-amber-300/80 mt-0.5">Digital Hazards, Harms & Ethical Dilemmas</p>
+                </div>
+                <div className="p-2.5 bg-black/40 rounded-xl border border-rose-500/30 text-xs space-y-1">
+                  <span className="font-bold text-rose-300 block">Definition of ICT Issues:</span>
+                  <p className="text-slate-300 leading-relaxed">
+                    Critical social hazards, psychological conflicts, legal violations, and security vulnerabilities that emerge from the unregulated, unethical, or negligent application of Information and Communications Technology.
+                  </p>
+                </div>
+                <div className="text-[11px] text-slate-300 space-y-1 pt-1">
+                  <p className="text-amber-300 font-semibold">The 4 Core Issues Studied:</p>
+                  <p>1. <strong>Cyberbullying:</strong> Online harassment, threats, and peer intimidation.</p>
+                  <p>2. <strong>Fake News:</strong> Fabricated stories misleading public understanding.</p>
+                  <p>3. <strong>Internet Addiction:</strong> Compulsive screen use harming daily health.</p>
+                  <p>4. <strong>Privacy Issues:</strong> Unauthorized harvesting and leaks of personal data.</p>
+                </div>
               </div>
             )}
 
